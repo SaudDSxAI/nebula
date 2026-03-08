@@ -1,0 +1,105 @@
+"""
+Database configuration and session management
+"""
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+from sqlalchemy.orm import declarative_base
+from app.config import settings
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Create async engine
+engine = create_async_engine(
+    settings.DATABASE_URL,
+    echo=settings.DEBUG,
+    pool_size=settings.DATABASE_POOL_SIZE,
+    max_overflow=settings.DATABASE_MAX_OVERFLOW,
+    pool_pre_ping=True,
+)
+
+# Create async session maker
+AsyncSessionLocal = async_sessionmaker(
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+    autocommit=False,
+    autoflush=False,
+)
+
+# Create declarative base for models
+Base = declarative_base()
+
+
+async def get_db():
+    """Dependency for getting database sessions"""
+    async with AsyncSessionLocal() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception as e:
+            await session.rollback()
+            logger.error(f"Database session error: {e}")
+            raise
+        finally:
+            await session.close()
+
+
+async def init_db():
+    """Initialize database - create all tables and run migrations"""
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    logger.info("Database initialized successfully")
+
+    # Run safe column migrations (add missing columns)
+    async with engine.begin() as conn:
+        try:
+            text = __import__('sqlalchemy').text
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255)")
+            )
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS notice_period VARCHAR(100)")
+            )
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS work_authorization VARCHAR(100)")
+            )
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS languages TEXT")
+            )
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS tags TEXT")
+            )
+            logger.info("Migration: candidates columns ensured (password_hash, notice_period, work_authorization, languages, tags)")
+            # Ensure messages table exists
+            await conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS messages (
+                    id SERIAL PRIMARY KEY,
+                    candidate_id INTEGER NOT NULL REFERENCES candidates(id) ON DELETE CASCADE,
+                    client_id INTEGER NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
+                    sender_type VARCHAR(20) NOT NULL,
+                    sender_id INTEGER,
+                    sender_name VARCHAR(255),
+                    message TEXT NOT NULL,
+                    is_read BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMP DEFAULT NOW()
+                )
+            """))
+            await conn.execute(text("CREATE INDEX IF NOT EXISTS idx_messages_candidate_client ON messages(candidate_id, client_id)"))
+            await conn.execute(text("CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at)"))
+            logger.info("Migration: messages table ensured")
+            # Ensure new requirement columns exist
+            for col, ctype in [
+                ("company_name", "VARCHAR(255)"), ("role_title", "VARCHAR(255)"),
+                ("facilities", "TEXT"), ("pay_type", "VARCHAR(50)"),
+                ("notes", "TEXT"), ("raw_text", "TEXT"), ("structured_data", "TEXT"),
+            ]:
+                await conn.execute(text(f"ALTER TABLE requirements ADD COLUMN IF NOT EXISTS {col} {ctype}"))
+            logger.info("Migration: requirements extended columns ensured")
+        except Exception as e:
+            logger.warning(f"Migration note: {e}")
+
+
+async def close_db():
+    """Close database connections"""
+    await engine.dispose()
+    logger.info("Database connections closed")

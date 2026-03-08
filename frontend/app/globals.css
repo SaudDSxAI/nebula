@@ -1,0 +1,288 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0274BD;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+  --color-primary-950: #082f49;
+
+  --font-sans: Inter, sans-serif;
+
+  --animate-fade-in: fadeIn 0.5s ease-out;
+  --animate-fade-in-up: fadeInUp 0.5s ease-out;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
+  }
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .glass {
+    background: var(--color-topbar-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #0274BD, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Base Styles */
+@layer base {
+  :root {
+    --color-background: #F5F7F5;
+    --color-card: #FFFFFF;
+    --color-sidebar: #4A6B50;
+
+    --color-text-primary: #1A241C;
+    --color-text-secondary: #526655;
+    --color-text-tertiary: #768f7a;
+    --color-text-muted: #9ab09e;
+    --color-text-inverse: #FFFFFF;
+
+    --color-primary: #4A6B50;
+    --color-primary-hover: #3A5540;
+    --color-primary-alpha: rgba(74, 107, 80, 0.08);
+
+    --color-secondary: #E0A800;
+    --color-secondary-hover: #C29000;
+
+    --color-accent: #D64545;
+    --color-accent-hover: #B83A3A;
+
+    --color-border: rgba(74, 107, 80, 0.2);
+    --color-border-focus: #4A6B50;
+
+    /* Inputs */
+    --color-input-bg: #F8FAF8;
+    --color-input-border: rgba(74, 107, 80, 0.2);
+
+    /* Hover for interactive rows */
+    --color-hover: rgba(74, 107, 80, 0.04);
+
+    --color-success-bg: #F9FFFC;
+    --color-success-text: #4ADE80;
+    --color-success-border: #4ADE80;
+
+    --color-warning-bg: #FCF9EE;
+    --color-warning-text: #E0A800;
+    --color-warning-border: #E0A800;
+
+    --color-info-bg: #FDF2F2;
+    --color-info-text: #D64545;
+    --color-info-border: #D64545;
+
+    --color-chart-primary: #4A6B50;
+    --color-chart-secondary: #E0A800;
+    --color-chart-tertiary: #D64545;
+    --color-chart-quaternary: #4ADE80;
+
+    --color-topbar-bg: rgba(255, 255, 255, 0.92);
+
+    --color-sidebar-active-bg: #FFFFFF;
+    --color-sidebar-active-text: var(--color-primary);
+  }
+
+  [data-theme='dark'],
+  .dark {
+    color-scheme: dark;
+
+    /* Backgrounds */
+    --color-background: #0F0F0F;
+    --color-card: #1A1A1A;
+    --color-sidebar: #141414;
+
+    /* Surfaces — multiple levels for depth */
+    --color-surface-2: #222222;
+    --color-surface-3: #2a2a2a;
+
+    /* Text */
+    --color-text-primary: #EFEFEF;
+    --color-text-secondary: #BBBBBB;
+    --color-text-tertiary: #888888;
+    --color-text-muted: #888888;
+    --color-text-inverse: #0F0F0F;
+
+    /* Primary brand */
+    --color-primary: #5D8564;
+    --color-primary-hover: #4A6B50;
+    --color-primary-alpha: rgba(93, 133, 100, 0.15);
+
+    /* Secondary */
+    --color-secondary: #E0A800;
+    --color-secondary-hover: #C29000;
+
+    /* Accent / Error */
+    --color-accent: #D64545;
+    --color-accent-hover: #B83A3A;
+
+    /* Borders */
+    --color-border: rgba(255, 255, 255, 0.09);
+    --color-border-focus: #5D8564;
+
+    /* Inputs */
+    --color-input-bg: #1F1F1F;
+    --color-input-border: rgba(255, 255, 255, 0.12);
+
+    /* Hover state for interactive rows */
+    --color-hover: rgba(255, 255, 255, 0.04);
+
+    /* Semantic — Success */
+    --color-success-bg: rgba(74, 222, 128, 0.08);
+    --color-success-text: #4ADE80;
+    --color-success-border: rgba(74, 222, 128, 0.25);
+
+    /* Semantic — Warning */
+    --color-warning-bg: rgba(224, 168, 0, 0.08);
+    --color-warning-text: #E0A800;
+    --color-warning-border: rgba(224, 168, 0, 0.25);
+
+    /* Semantic — Info / Error */
+    --color-info-bg: rgba(214, 69, 69, 0.08);
+    --color-info-text: #D64545;
+    --color-info-border: rgba(214, 69, 69, 0.25);
+
+    /* Charts */
+    --color-chart-primary: #5D8564;
+    --color-chart-secondary: #E0A800;
+    --color-chart-tertiary: #D64545;
+    --color-chart-quaternary: #4ADE80;
+
+    /* Top bar */
+    --color-topbar-bg: rgba(20, 20, 20, 0.98);
+    --color-topbar-border: rgba(255, 255, 255, 0.07);
+
+    /* Sidebar active state */
+    --color-sidebar-active-bg: rgba(255, 255, 255, 0.1);
+    --color-sidebar-active-text: #FFFFFF;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    background: var(--color-background);
+    color: var(--color-text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  ::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+  }
+
+  select {
+    color: var(--color-text-primary);
+    background-color: var(--color-card);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors;
+}
+
+/* ── Dark Mode Global Overrides ──────────────────────────────────────────────
+   Catch-all rules for elements that cannot easily be targeted by selector.
+   These ensure any surface that slipped through the per-page CSS-var migration
+   still renders correctly in dark mode.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── Input / textarea / select across ALL pages ── */
+.dark input:not([type='checkbox']):not([type='radio']):not([type='range']),
+.dark textarea,
+.dark select {
+  background-color: var(--color-input-bg) !important;
+  border-color: var(--color-input-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* ── option elements inside selects ── */
+.dark select option {
+  background-color: var(--color-card);
+  color: var(--color-text-primary);
+}
+
+/* ── Scrollbar in dark mode ── */
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── Table row hover ── */
+.dark tr:hover {
+  background: var(--color-hover) !important;
+}
+
+/* ── Generic card/modal panels using data-theme ── */
+[data-theme='dark'] .dark-card,
+.dark .dark-card {
+  background: var(--color-card) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* ── Placeholder text ── */
+.dark ::placeholder {
+  color: var(--color-text-muted) !important;
+  opacity: 1;
+}
