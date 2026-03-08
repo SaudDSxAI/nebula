@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import Dict, Any
 import logging
+import os
 
 from app.middleware.auth import require_auth, get_current_user
 from app.utils.auth import create_access_token, hash_password
@@ -40,7 +41,7 @@ _default_origins = [
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3001",
 ]
-_extra = _os.environ.get("ALLOWED_ORIGINS", "")
+_extra = os.environ.get("ALLOWED_ORIGINS", "")
 _origins = _default_origins + [o.strip() for o in _extra.split(",") if o.strip()]
 
 app.add_middleware(
