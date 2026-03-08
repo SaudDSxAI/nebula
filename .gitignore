@@ -16,4 +16,5 @@ backend/uploads/
 *.sh
 *.sql
 *.txt
+!requirements.txt
 *.html
