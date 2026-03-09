@@ -109,6 +109,14 @@ async def init_db():
                 await conn.execute(text(f"ALTER TABLE clients ADD COLUMN IF NOT EXISTS {col} {ctype}"))
             logger.info("Migration: clients extended columns ensured")
             
+            # Ensure new client_settings columns exist
+            for col, ctype in [
+                ("evaluator_prompt", "TEXT"),
+                ("evaluator_fields", "JSONB")
+            ]:
+                await conn.execute(text(f"ALTER TABLE client_settings ADD COLUMN IF NOT EXISTS {col} {ctype}"))
+            logger.info("Migration: client_settings extended columns ensured")
+            
         except Exception as e:
             logger.warning(f"Migration note: {e}")
 
