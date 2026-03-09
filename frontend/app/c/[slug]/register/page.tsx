@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { COLORS } from '@/lib/theme';
 import { UserPlus, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 interface ClientInfo {
     company_name: string;
@@ -29,7 +29,7 @@ export default function RegisterPage() {
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     useEffect(() => {
-        fetch(`${API}/api/portal/${slug}`)
+        fetch(`${API_BASE_URL}/api/portal/${slug}`)
             .then(r => r.json())
             .then(setClient)
             .catch(() => router.push('/'));
@@ -50,7 +50,7 @@ export default function RegisterPage() {
         setLoading(true);
 
         try {
-            const res = await fetch(`${API}/api/portal/${slug}/register`, {
+            const res = await fetch(`${API_BASE_URL}/api/portal/${slug}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form),

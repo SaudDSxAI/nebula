@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { COLORS } from '@/lib/theme';
 import { FileText, ArrowLeft, Send, Upload, CheckCircle, AlertCircle, Paperclip, ClipboardList } from 'lucide-react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 interface Message {
     id: string;
@@ -47,7 +47,7 @@ export default function CVEvaluatorPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        fetch(`${API}/api/portal/${slug}`)
+        fetch(`${API_BASE_URL}/api/portal/${slug}`)
             .then(r => r.json())
             .then(data => {
                 setClient(data);
@@ -93,7 +93,7 @@ export default function CVEvaluatorPage() {
         setLoading(true);
 
         try {
-            const res = await fetch(`${API}/api/portal/${slug}/cv/message`, {
+            const res = await fetch(`${API_BASE_URL}/api/portal/${slug}/cv/message`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ session_id: sessionId, message: text }),
@@ -123,7 +123,7 @@ export default function CVEvaluatorPage() {
         formData.append('session_id', sessionId);
 
         try {
-            const res = await fetch(`${API}/api/portal/${slug}/cv/upload`, {
+            const res = await fetch(`${API_BASE_URL}/api/portal/${slug}/cv/upload`, {
                 method: 'POST', body: formData,
             });
             handleResponse(await res.json());
@@ -152,7 +152,7 @@ export default function CVEvaluatorPage() {
         setLoading(true);
 
         try {
-            const res = await fetch(`${API}/api/portal/${slug}/cv/submit-fields`, {
+            const res = await fetch(`${API_BASE_URL}/api/portal/${slug}/cv/submit-fields`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ session_id: sessionId, fields: fieldValues }),

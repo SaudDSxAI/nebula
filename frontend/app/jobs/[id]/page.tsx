@@ -22,7 +22,7 @@ interface JobDetail {
     deadline: string | null;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 export default function JobDetailPage() {
     const params = useParams();
@@ -34,7 +34,7 @@ export default function JobDetailPage() {
     useEffect(() => {
         const loadJob = async () => {
             try {
-                const res = await fetch(`${API}/api/public/jobs/${jobId}`);
+                const res = await fetch(`${API_BASE_URL}/api/public/jobs/${jobId}`);
                 if (!res.ok) throw new Error('Job not found');
                 const data = await res.json();
                 setJob(data);

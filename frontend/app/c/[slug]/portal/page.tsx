@@ -11,7 +11,7 @@ import {
     Send, Lock, Mail, Shield, Eye, EyeOff, Save, Hand, Edit3, XCircle
 } from 'lucide-react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 interface Profile {
     id: number; name: string; email: string; phone: string | null;
@@ -72,11 +72,11 @@ export default function CandidatePortalPage() {
         try {
             const headers = { Authorization: `Bearer ${t}` };
             const [profileRes, jobsRes, appsRes, cvsRes, unreadRes] = await Promise.all([
-                fetch(`${API}/api/candidate/me`, { headers }),
-                fetch(`${API}/api/candidate/jobs`, { headers }),
-                fetch(`${API}/api/candidate/applications`, { headers }),
-                fetch(`${API}/api/candidate/cv`, { headers }),
-                fetch(`${API}/api/candidate/messages/unread`, { headers }),
+                fetch(`${API_BASE_URL}/api/candidate/me`, { headers }),
+                fetch(`${API_BASE_URL}/api/candidate/jobs`, { headers }),
+                fetch(`${API_BASE_URL}/api/candidate/applications`, { headers }),
+                fetch(`${API_BASE_URL}/api/candidate/cv`, { headers }),
+                fetch(`${API_BASE_URL}/api/candidate/messages/unread`, { headers }),
             ]);
             if (profileRes.status === 401) {
                 localStorage.removeItem('candidate_token');
@@ -282,7 +282,7 @@ function ProfileTab({ profile, token, onUpdate, onMessage }: { profile: Profile;
         try {
             const body: any = { ...form };
             if (body.years_of_experience === '') delete body.years_of_experience; else body.years_of_experience = parseInt(body.years_of_experience);
-            const res = await fetch(`${API}/api/candidate/me`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
+            const res = await fetch(`${API_BASE_URL}/api/candidate/me`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
             if (res.ok) { onMessage('SUCCESS: Profile saved successfully!'); onUpdate(); } else onMessage('ERROR: Failed to update profile');
         } catch { onMessage('ERROR: Network error'); }
         setSaving(false);
@@ -341,7 +341,7 @@ function JobsTab({ jobs, token, onApply, onMessage }: { jobs: Job[]; token: stri
     const handleApply = async (jobId: number) => {
         setApplying(jobId);
         try {
-            const res = await fetch(`${API}/api/candidate/jobs/${jobId}/apply`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+            const res = await fetch(`${API_BASE_URL}/api/candidate/jobs/${jobId}/apply`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
             const data = await res.json();
             if (res.ok) { onMessage('SUCCESS: Application submitted successfully!'); onApply(); } else onMessage(`ERROR: ${data.detail || 'Failed to apply'}`);
         } catch { onMessage('ERROR: Network error'); }
@@ -439,7 +439,7 @@ function CVTab({ cvs, token, onUpload, onMessage }: { cvs: any[]; token: string;
         setUploading(true);
         const formData = new FormData(); formData.append('file', file);
         try {
-            const res = await fetch(`${API}/api/candidate/cv/upload`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData });
+            const res = await fetch(`${API_BASE_URL}/api/candidate/cv/upload`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData });
             const data = await res.json();
             if (res.ok) { onMessage(data.profile_updated ? `SUCCESS: CV uploaded! AI extracted ${data.extracted_fields?.length || 0} fields.` : 'SUCCESS: CV uploaded successfully!'); onUpload(); }
             else onMessage(`ERROR: ${data.detail || 'Upload failed'}`);
@@ -449,7 +449,7 @@ function CVTab({ cvs, token, onUpload, onMessage }: { cvs: any[]; token: string;
     const handleDelete = async (cvId: number) => {
         if (!confirm('Delete this CV?')) return;
         setDeleting(cvId);
-        try { const res = await fetch(`${API}/api/candidate/cv/${cvId}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }); if (res.ok) { onMessage('SUCCESS: CV deleted'); onUpload(); } else onMessage('ERROR: Failed to delete'); } catch { onMessage('ERROR: Network error'); }
+        try { const res = await fetch(`${API_BASE_URL}/api/candidate/cv/${cvId}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }); if (res.ok) { onMessage('SUCCESS: CV deleted'); onUpload(); } else onMessage('ERROR: Failed to delete'); } catch { onMessage('ERROR: Network error'); }
         setDeleting(null);
     };
     return (
@@ -504,7 +504,7 @@ function MessagesTab({ token, onMessage }: { token: string; onMessage: (msg: str
 
     const loadMessages = useCallback(async () => {
         try {
-            const res = await fetch(`${API}/api/candidate/messages`, { headers: { Authorization: `Bearer ${token}` } });
+            const res = await fetch(`${API_BASE_URL}/api/candidate/messages`, { headers: { Authorization: `Bearer ${token}` } });
             if (res.ok) { const data = await res.json(); setMessages(data.messages || []); }
         } catch { /* ignore */ }
         setLoading(false);
@@ -517,7 +517,7 @@ function MessagesTab({ token, onMessage }: { token: string; onMessage: (msg: str
         if (!newMsg.trim()) return;
         setSending(true);
         try {
-            const res = await fetch(`${API}/api/candidate/messages`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ message: newMsg.trim() }) });
+            const res = await fetch(`${API_BASE_URL}/api/candidate/messages`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ message: newMsg.trim() }) });
             if (res.ok) { setNewMsg(''); loadMessages(); } else onMessage('ERROR: Failed to send message');
         } catch { onMessage('ERROR: Network error'); }
         setSending(false);
@@ -578,7 +578,7 @@ function SettingsTab({ profile, token, onMessage }: { profile: Profile; token: s
         if (newPw !== confirmPw) { onMessage('ERROR: Passwords do not match'); return; }
         setChangingPw(true);
         try {
-            const res = await fetch(`${API}/api/candidate/password`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ current_password: currentPw, new_password: newPw }) });
+            const res = await fetch(`${API_BASE_URL}/api/candidate/password`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ current_password: currentPw, new_password: newPw }) });
             const data = await res.json();
             if (res.ok) { onMessage('SUCCESS: Password changed successfully!'); setCurrentPw(''); setNewPw(''); setConfirmPw(''); } else onMessage(`ERROR: ${data.detail}`);
         } catch { onMessage('ERROR: Network error'); }
@@ -588,7 +588,7 @@ function SettingsTab({ profile, token, onMessage }: { profile: Profile; token: s
     const handleSendOTP = async () => {
         setOtpSending(true);
         try {
-            const res = await fetch(`${API}/api/candidate/otp/send`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+            const res = await fetch(`${API_BASE_URL}/api/candidate/otp/send`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
             const data = await res.json();
             if (res.ok) { onMessage('SUCCESS: Verification code sent!'); setOtpSent(true); } else onMessage(`ERROR: ${data.detail}`);
         } catch { onMessage('ERROR: Network error'); }
@@ -599,7 +599,7 @@ function SettingsTab({ profile, token, onMessage }: { profile: Profile; token: s
         if (otpCode.length !== 6) { onMessage('ERROR: Enter the 6-digit code'); return; }
         setVerifying(true);
         try {
-            const res = await fetch(`${API}/api/candidate/otp/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ code: otpCode }) });
+            const res = await fetch(`${API_BASE_URL}/api/candidate/otp/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ code: otpCode }) });
             const data = await res.json();
             if (res.ok) { onMessage('SUCCESS: Email verified!'); setVerified(true); } else onMessage(`ERROR: ${data.detail}`);
         } catch { onMessage('ERROR: Network error'); }

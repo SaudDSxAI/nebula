@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 import { COLORS } from '@/lib/theme';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
@@ -31,7 +31,7 @@ export default function CandidateAuthPage() {
     });
 
     useEffect(() => {
-        fetch(`${API}/api/portal/${slug}`)
+        fetch(`${API_BASE_URL}/api/portal/${slug}`)
             .then(r => r.json())
             .then(setClient)
             .catch(() => router.push('/'));
@@ -65,8 +65,8 @@ export default function CandidateAuthPage() {
 
         try {
             const endpoint = mode === 'signup'
-                ? `${API}/api/candidate/${slug}/signup`
-                : `${API}/api/candidate/${slug}/login`;
+                ? `${API_BASE_URL}/api/candidate/${slug}/signup`
+                : `${API_BASE_URL}/api/candidate/${slug}/login`;
 
             const body = mode === 'signup'
                 ? {

@@ -6,7 +6,7 @@ import { AlertCircle, CheckCircle2, LogIn, Send } from 'lucide-react';
 
 import { COLORS } from '@/lib/theme';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 interface ClientInfo {
     company_name: string;
@@ -43,7 +43,7 @@ export default function PublicCandidatePortalPage() {
         const loadClient = async () => {
             try {
                 setLoadingClient(true);
-                const res = await fetch(`${API}/api/portal/${slug}`);
+                const res = await fetch(`${API_BASE_URL}/api/portal/${slug}`);
                 if (!res.ok) throw new Error('Portal not found');
                 const data = await res.json();
                 if (!mounted) return;
@@ -79,7 +79,7 @@ export default function PublicCandidatePortalPage() {
 
         try {
             setSubmitting(true);
-            const res = await fetch(`${API}/api/portal/${slug}/register`, {
+            const res = await fetch(`${API_BASE_URL}/api/portal/${slug}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

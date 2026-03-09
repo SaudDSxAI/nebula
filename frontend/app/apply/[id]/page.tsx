@@ -12,7 +12,7 @@ interface JobInfo {
     remote_type: string;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 export default function ApplyPage() {
     const params = useParams();
@@ -35,7 +35,7 @@ export default function ApplyPage() {
     useEffect(() => {
         const loadJob = async () => {
             try {
-                const res = await fetch(`${API}/api/public/jobs/${jobId}`);
+                const res = await fetch(`${API_BASE_URL}/api/public/jobs/${jobId}`);
                 if (!res.ok) throw new Error('Job not found');
                 const data = await res.json();
                 setJob(data);
@@ -104,7 +104,7 @@ export default function ApplyPage() {
         formData.append('resume', resume);
 
         try {
-            const res = await fetch(`${API}/api/public/apply`, {
+            const res = await fetch(`${API_BASE_URL}/api/public/apply`, {
                 method: 'POST',
                 body: formData,
             });

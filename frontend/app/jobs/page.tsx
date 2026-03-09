@@ -8,7 +8,7 @@ import { Search, Monitor, Briefcase } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 import { COLORS } from '@/lib/theme';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 export default function JobBoardPage() {
     const [jobs, setJobs] = useState<Job[]>([]);
@@ -25,7 +25,7 @@ export default function JobBoardPage() {
             if (search) params.set('search', search);
             if (location) params.set('location', location);
             if (remoteType) params.set('remote_type', remoteType);
-            const res = await fetch(`${API}/api/public/jobs?${params.toString()}`);
+            const res = await fetch(`${API_BASE_URL}/api/public/jobs?${params.toString()}`);
             if (!res.ok) throw new Error('Failed to fetch jobs');
             const data = await res.json();
             setJobs(Array.isArray(data) ? data : []);

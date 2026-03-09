@@ -6,19 +6,6 @@ import Link from 'next/link';
 import apiClient from '@/lib/api/client';
 import { Zap, Mail, Lock, Eye, EyeOff, CalendarDays } from 'lucide-react';
 
-const PRIMARY = '#4A6B50';
-const PRIMARY_D = '#3A5540';
-const BG = '#F5F7F5';
-const SURFACE = '#FFFFFF';
-const TEXT = '#1A241C';
-const MUTED = '#526655';
-const MUTED_L = '#9ab09e';
-const BORDER = 'rgba(74,107,80,0.2)';
-const ERROR = '#D64545';
-const GOLD = '#E0A800';
-const FONT = "'Nunito', 'Inter', sans-serif";
-const HEAD_FONT = "'Varela Round', sans-serif";
-
 export default function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState('');
@@ -67,151 +54,101 @@ export default function LoginPage() {
         }
     };
 
-    const inp: React.CSSProperties = {
-        width: '100%', padding: '12px 14px 12px 42px',
-        border: `1.5px solid ${BORDER}`, borderRadius: 10,
-        fontSize: 14, fontFamily: FONT, color: TEXT,
-        background: '#F8FAF8',
-        outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.2s',
-    };
-
     return (
-        <div style={{
-            minHeight: '100vh', display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center',
-            background: BG, fontFamily: FONT, padding: 24,
-        }}>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--color-background)] p-4 sm:p-6 md:p-8 font-sans">
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@400;500;600;700;800&display=swap');
-                input:focus { border-color: ${PRIMARY} !important; box-shadow: 0 0 0 3px rgba(74,107,80,0.12) !important; }
-                .btn-login:hover:not(:disabled) { background: ${PRIMARY_D} !important; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74,107,80,0.35) !important; }
-                .book-btn:hover { background: rgba(74,107,80,0.06) !important; border-color: ${PRIMARY} !important; color: ${PRIMARY} !important; }
-                .signup-link:hover { text-decoration: underline !important; }
-            ` }} />
+                .font-heading { font-family: 'Varela Round', sans-serif; }
+                `
+            }} />
 
             {/* Card */}
-            <div style={{
-                background: SURFACE,
-                border: `1px solid ${BORDER}`,
-                borderRadius: 20,
-                padding: '44px 40px',
-                width: '100%', maxWidth: 420,
-                boxShadow: '0 4px 32px rgba(74,107,80,0.1)',
-            }}>
+            <div className="w-full max-w-[420px] bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl md:rounded-[20px] p-6 sm:p-8 md:p-10 shadow-[0_4px_32px_rgba(74,107,80,0.1)] transition-all">
                 {/* Logo */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
-                    <div style={{
-                        width: 40, height: 40, borderRadius: 12,
-                        background: `linear-gradient(135deg, ${PRIMARY}, ${PRIMARY_D})`,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        boxShadow: '0 4px 12px rgba(74,107,80,0.3)',
-                    }}>
-                        <Zap size={20} color="#fff" fill="#fff" />
+                <div className="flex items-center gap-2.5 mb-8">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center shadow-[0_4px_12px_rgba(74,107,80,0.3)]">
+                        <Zap size={20} className="text-white fill-white" />
                     </div>
-                    <span style={{ fontFamily: HEAD_FONT, fontSize: 20, fontWeight: 700, color: TEXT }}>Nebula</span>
+                    <span className="font-heading text-xl font-bold text-[var(--color-text-primary)]">Nebula</span>
                 </div>
 
-                <h1 style={{ fontFamily: HEAD_FONT, fontSize: 24, fontWeight: 700, color: TEXT, margin: '0 0 6px' }}>
+                <h1 className="font-heading text-2xl font-bold text-[var(--color-text-primary)] mb-1.5">
                     Welcome back
                 </h1>
-                <p style={{ fontSize: 14, color: MUTED, margin: '0 0 28px' }}>
+                <p className="text-sm text-[var(--color-text-muted)] mb-7">
                     Sign in to your account to continue.
                 </p>
 
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleLogin} className="space-y-4 md:space-y-6">
                     {/* Email */}
-                    <div style={{ marginBottom: 16 }}>
-                        <label style={{ fontSize: 12, fontWeight: 700, color: MUTED, display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                    <div>
+                        <label className="block text-[11px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1.5">
                             Email address
                         </label>
-                        <div style={{ position: 'relative' }}>
-                            <Mail size={15} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: MUTED_L }} />
+                        <div className="relative">
+                            <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
                             <input
                                 type="email" required autoComplete="email"
                                 placeholder="you@company.com"
                                 value={email} onChange={e => setEmail(e.target.value)}
-                                style={inp}
+                                className="w-full py-3 pl-10 pr-3.5 bg-[var(--color-input-bg)] border-1.5 border-[var(--color-input-border)] rounded-lg text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-[var(--color-primary-alpha)]"
                             />
                         </div>
                     </div>
 
                     {/* Password */}
-                    <div style={{ marginBottom: 24 }}>
-                        <label style={{ fontSize: 12, fontWeight: 700, color: MUTED, display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                    <div>
+                        <label className="block text-[11px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1.5">
                             Password
                         </label>
-                        <div style={{ position: 'relative' }}>
-                            <Lock size={15} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: MUTED_L }} />
+                        <div className="relative">
+                            <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
                             <input
                                 type={showPw ? 'text' : 'password'} required autoComplete="current-password"
                                 placeholder="••••••••"
                                 value={password} onChange={e => setPassword(e.target.value)}
-                                style={{ ...inp, paddingRight: 44 }}
+                                className="w-full py-3 pl-10 pr-11 bg-[var(--color-input-bg)] border-1.5 border-[var(--color-input-border)] rounded-lg text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-[var(--color-primary-alpha)]"
                             />
-                            <button type="button" onClick={() => setShowPw(!showPw)} style={{
-                                position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)',
-                                background: 'none', border: 'none', cursor: 'pointer', color: MUTED_L, padding: 2,
-                            }}>
-                                {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
+                            <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">
+                                {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
                         </div>
                     </div>
 
                     {/* Error */}
                     {error && (
-                        <div style={{
-                            marginBottom: 18, padding: '10px 14px',
-                            background: 'rgba(214,69,69,0.07)', border: '1px solid rgba(214,69,69,0.2)',
-                            borderRadius: 8, fontSize: 13, color: ERROR,
-                        }}>
+                        <div className="px-3.5 py-3 bg-[var(--color-info-bg)] border border-[var(--color-info-border)] rounded-lg text-sm text-[var(--color-info-text)]">
                             {error}
                         </div>
                     )}
 
-                    <button type="submit" disabled={loading} className="btn-login" style={{
-                        width: '100%', padding: '13px',
-                        background: loading ? MUTED_L : PRIMARY,
-                        border: 'none', borderRadius: 10, color: '#fff',
-                        fontFamily: FONT, fontSize: 15, fontWeight: 700,
-                        cursor: loading ? 'not-allowed' : 'pointer',
-                        transition: 'all 0.2s',
-                        boxShadow: `0 4px 16px rgba(74,107,80,0.25)`,
-                    }}>
+                    <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide text-white transition-all shadow-[0_4px_16px_rgba(74,107,80,0.25)] hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(74,107,80,0.35)] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none bg-primary hover:bg-primary-hover">
                         {loading ? 'Signing in…' : 'Sign In'}
                     </button>
                 </form>
 
                 {/* Divider */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '24px 0' }}>
-                    <div style={{ flex: 1, height: 1, background: BORDER }} />
-                    <span style={{ fontSize: 12, color: MUTED_L }}>or</span>
-                    <div style={{ flex: 1, height: 1, background: BORDER }} />
+                <div className="flex items-center gap-3 my-6">
+                    <div className="flex-1 h-px bg-[var(--color-border)]" />
+                    <span className="text-[11px] uppercase tracking-widest text-[var(--color-text-muted)] mt-0.5">or</span>
+                    <div className="flex-1 h-px bg-[var(--color-border)]" />
                 </div>
 
                 {/* Sign up CTA */}
-                <p style={{ textAlign: 'center', fontSize: 14, color: MUTED, margin: '0 0 12px' }}>
+                <p className="text-center text-sm text-[var(--color-text-muted)] mb-4">
                     Don't have an account?{' '}
-                    <Link href="/client/signup" className="signup-link" style={{ color: PRIMARY, fontWeight: 700, textDecoration: 'none' }}>
-                        Start your free 14-day trial →
+                    <Link href="/client/signup" className="text-primary font-bold hover:underline">
+                        Start your free trial →
                     </Link>
                 </p>
 
-                {/* Book a call */}
+                {/* Book a call hover effects using tailwind group or standard hover */}
                 <a
                     href="https://cal.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="book-btn"
-                    style={{
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                        width: '100%', padding: '11px',
-                        border: `1.5px solid ${BORDER}`, borderRadius: 10,
-                        fontSize: 14, fontWeight: 600, color: MUTED,
-                        background: 'transparent', textDecoration: 'none',
-                        transition: 'all 0.2s', cursor: 'pointer',
-                        boxSizing: 'border-box', fontFamily: FONT,
-                    }}
+                    className="flex items-center justify-center gap-2 w-full py-2.5 border-1.5 border-[var(--color-border)] rounded-xl text-[13px] font-semibold text-[var(--color-text-secondary)] bg-transparent hover:bg-[var(--color-primary-alpha)] hover:border-primary hover:text-primary transition-all duration-200"
                 >
                     <CalendarDays size={16} />
                     Book a call with us
@@ -219,7 +156,7 @@ export default function LoginPage() {
             </div>
 
             {/* Footer */}
-            <p style={{ marginTop: 24, fontSize: 12, color: MUTED_L, textAlign: 'center', fontFamily: FONT }}>
+            <p className="mt-8 text-[11px] sm:text-xs text-[var(--color-text-muted)] text-center tracking-wide">
                 © {new Date().getFullYear()} Nebula. All rights reserved.
             </p>
         </div>

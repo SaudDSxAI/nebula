@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { COLORS } from '@/lib/theme';
 import { Bot, ArrowLeft, Send, Sparkles } from 'lucide-react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api/base';
 
 interface Message {
     id: string;
@@ -37,7 +37,7 @@ export default function AssistantPage() {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        fetch(`${API}/api/portal/${slug}`)
+        fetch(`${API_BASE_URL}/api/portal/${slug}`)
             .then(r => r.json())
             .then(data => {
                 setClient(data);
@@ -65,7 +65,7 @@ export default function AssistantPage() {
         setLoading(true);
 
         try {
-            const res = await fetch(`${API}/api/portal/${slug}/assistant/message`, {
+            const res = await fetch(`${API_BASE_URL}/api/portal/${slug}/assistant/message`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ session_id: sessionId, message: userMsg.content }),
