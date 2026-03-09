@@ -30,10 +30,12 @@ MAX_JSON_CORRECTION_ATTEMPTS = 3
 
 def load_prompt(filename: str) -> str:
     """Load prompt from prompts directory."""
-    prompt_path = Path(__file__).parent.parent / "prompts" / filename
+    # Ensure robust path resolution inside container runtime
+    app_dir = Path(__file__).resolve().parent.parent
+    prompt_path = app_dir / "prompts" / filename
     if prompt_path.exists():
         return prompt_path.read_text(encoding="utf-8")
-    raise FileNotFoundError(f"Prompt file not found: {filename}")
+    raise FileNotFoundError(f"Prompt file not found: {filename} at {prompt_path}")
 
 # Load prompts on module import
 CV_SELECTOR_PROMPT = load_prompt("cv_selector.txt")
