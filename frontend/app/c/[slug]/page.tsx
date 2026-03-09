@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { User, FileText, MessageSquare, Settings2, CheckCircle2, AlertCircle, Upload, ClipboardList, Edit3, Save, X, Briefcase, MapPin, Phone, Mail, Globe, Linkedin, Award, Clock, DollarSign, Shield, Eye, Languages, GraduationCap, Send, Trash2, Download, Calendar, ChevronRight, Paperclip } from 'lucide-react';
+import { API_BASE_URL } from '@/lib/api/base';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API = API_BASE_URL;
 
 type Screen = 'cv' | 'login' | 'invite' | 'dashboard';
 type DashTab = 'profile' | 'documents' | 'messages' | 'settings';
@@ -72,12 +73,13 @@ export default function CandidatePortal() {
     const [inviteToken, setInviteToken] = useState<string | null>(null);
     const [inviteData, setInviteData] = useState<any>(null);
     const [initialized, setInitialized] = useState(false);
+    const [clientLoadError, setClientLoadError] = useState(false);
 
     useEffect(() => {
         fetch(`${API}/api/portal/${slug}`)
             .then(r => { if (!r.ok) throw new Error('Not found'); return r.json(); })
-            .then(setClient)
-            .catch(() => router.push('/'));
+            .then(data => { setClient(data); setClientLoadError(false); })
+            .catch(() => setClientLoadError(true));
     }, [slug]);
 
     useEffect(() => {
@@ -118,6 +120,20 @@ export default function CandidatePortal() {
         localStorage.removeItem('candidate_slug');
         setToken(null); setScreen('cv');
     };
+
+    if (clientLoadError) {
+        return (
+            <div style={{ minHeight: '100vh', background: C.bg, fontFamily: "'Inter', sans-serif", color: C.text, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+                <div style={{ maxWidth: 520, width: '100%', background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 24, textAlign: 'center' }}>
+                    <AlertCircle size={36} color={C.warning} style={{ marginBottom: 10 }} />
+                    <h2 style={{ margin: '0 0 8px', fontSize: 20 }}>Portal unavailable</h2>
+                    <p style={{ margin: 0, color: C.muted, fontSize: 14, lineHeight: 1.6 }}>
+                        This candidate link is invalid, inactive, or temporarily unavailable.
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     if (!client || !initialized) return <Spinner />;
 
