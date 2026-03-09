@@ -98,15 +98,20 @@ async def init_db():
 
             # Ensure new client columns exist
             for col, ctype in [
-                ("company_description", "TEXT"), ("company_data", "JSONB"),
+                ("company_description", "TEXT"), ("company_data", "TEXT"),
                 ("industry", "VARCHAR(255)"), ("team_size", "VARCHAR(100)"), ("headquarters", "VARCHAR(255)"), 
-                ("benefits", "JSONB"), ("portal_headline", "VARCHAR(255)"), ("portal_tagline", "VARCHAR(255)"), 
+                ("benefits", "TEXT"), ("portal_headline", "VARCHAR(255)"), ("portal_tagline", "VARCHAR(255)"), 
                 ("portal_contact_email", "VARCHAR(255)"), ("portal_stat1_num", "VARCHAR(50)"), ("portal_stat1_label", "VARCHAR(255)"),
                 ("portal_stat2_num", "VARCHAR(50)"), ("portal_stat2_label", "VARCHAR(255)"), ("portal_stat3_num", "VARCHAR(50)"), ("portal_stat3_label", "VARCHAR(255)"),
                 ("logo_scale", "FLOAT"), ("logo_offset_x", "FLOAT"), ("logo_offset_y", "FLOAT"),
                 ("gdpr_consent", "BOOLEAN"), ("gdpr_consent_date", "TIMESTAMP")
             ]:
                 await conn.execute(text(f"ALTER TABLE clients ADD COLUMN IF NOT EXISTS {col} {ctype}"))
+            
+            # Fix incorrectly added JSONB columns
+            await conn.execute(text("ALTER TABLE clients ALTER COLUMN company_data TYPE TEXT USING company_data::text"))
+            await conn.execute(text("ALTER TABLE clients ALTER COLUMN benefits TYPE TEXT USING benefits::text"))
+
             logger.info("Migration: clients extended columns ensured")
             
             # Ensure new client_settings columns exist
