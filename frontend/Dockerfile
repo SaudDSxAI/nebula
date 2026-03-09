@@ -3,6 +3,10 @@ FROM node:20-alpine
 # Set working directory
 WORKDIR /app
 
+# Consume Railway's environment variables during the Docker build process
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 # Copy package management files to utilize Docker cache effectively
 COPY package.json package-lock.json* ./
 
