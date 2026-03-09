@@ -59,11 +59,14 @@ export default function CandidatePortalPage() {
 
     useEffect(() => {
         const t = localStorage.getItem('candidate_token');
-        if (!t) { router.push(`/c/${slug}/auth`); return; }
+        const tokenSlug = localStorage.getItem('candidate_slug');
+        // Shared job links should remain public. If no valid candidate session
+        // exists for this slug, send visitor to the public landing page.
+        if (!t || tokenSlug !== slug) { router.replace(`/c/${slug}`); return; }
         tokenRef.current = t;
         setToken(t);
         loadData(t);
-    }, [slug]);
+    }, [slug, router]);
 
     const loadData = useCallback(async (t: string) => {
         try {
@@ -75,7 +78,13 @@ export default function CandidatePortalPage() {
                 fetch(`${API}/api/candidate/cv`, { headers }),
                 fetch(`${API}/api/candidate/messages/unread`, { headers }),
             ]);
-            if (profileRes.status === 401) { localStorage.removeItem('candidate_token'); router.push(`/c/${slug}/auth`); return; }
+            if (profileRes.status === 401) {
+                localStorage.removeItem('candidate_token');
+                localStorage.removeItem('candidate_name');
+                localStorage.removeItem('candidate_slug');
+                router.replace(`/c/${slug}/auth?mode=login`);
+                return;
+            }
             const [pd, jd, ad, cd, ud] = await Promise.all([profileRes.json(), jobsRes.json(), appsRes.json(), cvsRes.json(), unreadRes.json()]);
             // Batch all updates together to cause only ONE re-render
             setProfile(pd);
@@ -91,8 +100,8 @@ export default function CandidatePortalPage() {
         localStorage.removeItem('candidate_token');
         localStorage.removeItem('candidate_name');
         localStorage.removeItem('candidate_slug');
-        router.push(`/c/${slug}/auth`);
-    }, [slug]);
+        router.push(`/c/${slug}`);
+    }, [slug, router]);
 
     const showMsg = useCallback((msg: string) => {
         setMessage(msg);
