@@ -12,11 +12,10 @@ RUN npm install
 # Copy application files
 COPY . .
 
-# Temporarily omitting "RUN npm run build" 
-# For local dev environments via docker-compose, "npm run dev" is invoked.
-# (If building for Railway, Railway detects this file and you can run build steps there)
+# Build the application
+RUN npm run build
 
 EXPOSE 3000
 
-# Default command for development 
-CMD ["npm", "run", "dev"]
+# Default command for production
+CMD ["npm", "run", "start"]
