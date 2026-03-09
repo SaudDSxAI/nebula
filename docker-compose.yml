@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: trm_db
+    environment:
+      POSTGRES_USER: saudahmad 
+      POSTGRES_DB: trm_platform 
+      POSTGRES_HOST_AUTH_METHOD: trust # Allow seamless local connection without setting random passwords
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trm_backend
+    volumes:
+      - ./backend:/app # Automatically syncs file changes from your Mac to the container
+    ports:
+      - "8000:8000"
+    environment:
+      # Tell the backend container to connect to "db" (the line above) instead of "localhost" (itself)
+      - DATABASE_URL=postgresql+asyncpg://saudahmad@db:5432/trm_platform
+    env_file:
+      - ./backend/.env
+    # The --reload flag gives you instant, automatic hot-reloads of your APIs
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trm_frontend
+    volumes:
+      - ./frontend:/app # Automatically sync file changes 
+      - /app/node_modules # Instructs Docker to keep dependencies separate inside the container 
+      - /app/.next # Instructs Docker to keep builds completely separate
+    ports:
+      - "3000:3000"
+    environment:
+      # Ensures NextJS talks to your backend efficiently on localhost
+      - NEXT_PUBLIC_API_URL=http://localhost:8000 
+    command: npm run dev
+    depends_on:
+      - backend
+
+volumes:
+  # Creates a persistent volume on your Mac, so destroying containers doesn't delete your active Database entries
+  postgres_data:
