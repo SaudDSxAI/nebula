@@ -17,10 +17,12 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   },
   async rewrites() {
+    let rawUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    if (!rawUrl.startsWith('http')) rawUrl = `https://${rawUrl}`;
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/:path*`,
+        destination: `${rawUrl}/:path*`,
       },
     ];
   },

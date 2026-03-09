@@ -7,6 +7,7 @@ import axios from 'axios';
 let rawUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 if (rawUrl.endsWith('/api')) rawUrl = rawUrl.slice(0, -4);
 if (rawUrl.endsWith('/')) rawUrl = rawUrl.slice(0, -1);
+if (!rawUrl.startsWith('http')) rawUrl = `https://${rawUrl}`;
 const API_BASE_URL = rawUrl;
 
 export const apiClient = axios.create({
