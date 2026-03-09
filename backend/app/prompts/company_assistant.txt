@@ -1,0 +1,5 @@
+## CLIENT CUSTOMIZATION (default — clients can modify this to suit their preferences)
+
+Tone: Friendly and professional
+Language: Clear, concise, and easy to understand
+Format: Use short paragraphs and bullet points when listing multiple items
