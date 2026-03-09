@@ -17,15 +17,15 @@ const BLACK = '#1c1917';
 
 const TOOLTIP_STYLE = {
     contentStyle: {
-        background: COLORS.card, border: `1px solid ${COLORS.border}`,
+        background: 'var(--color-card)', border: `1px solid var(--color-border)`,
         borderRadius: 10, fontSize: 13, padding: '10px 14px',
         boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+        color: 'var(--color-text-primary)'
     },
 };
 
 /* ═══════════════════════════════════════════════════════════
-   MAIN DASHBOARD — matches coter-global-agent exactly
-   5 stat cards + 2 charts (Roles bar + Timeline line)
+   MAIN DASHBOARD
    ═══════════════════════════════════════════════════════════ */
 export default function ClientDashboardPage() {
     const [client, setClient] = useState<any>(null);
@@ -68,35 +68,27 @@ export default function ClientDashboardPage() {
 
     if (loading) {
         return (
-            <div style={{ textAlign: 'center', padding: '100px 0', color: COLORS.textMuted }}>
-                <div style={{
-                    width: 40, height: 40, border: `3px solid ${COLORS.secondary}`,
-                    borderTopColor: BLUE, borderRadius: '50%',
-                    animation: 'spin 0.8s linear infinite', margin: '0 auto 16px',
-                }} />
+            <div className="flex flex-col items-center justify-center py-24 text-[var(--color-text-muted)]">
+                <div className="w-10 h-10 border-4 border-secondary border-t-primary rounded-full animate-spin mb-4" />
                 Loading dashboard...
-                <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
             </div>
         );
     }
 
     return (
-        <>
+        <div className="w-full">
             {/* Header */}
-            <div style={{ marginBottom: 28 }}>
-                <h1 style={{
-                    fontSize: 26, fontWeight: 800, margin: 0, marginBottom: 4,
-                    color: COLORS.textPrimary, letterSpacing: '-0.02em',
-                }}>
+            <div className="mb-6 md:mb-8">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-[var(--color-text-primary)] tracking-tight mb-1.5 font-heading">
                     Dashboard — {client?.company_name}
                 </h1>
-                <p style={{ color: COLORS.textSecondary, fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed m-0">
                     Candidate overview and requirements status
                 </p>
             </div>
 
-            {/* ── 5 Stat Cards (exactly like old app) ── */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 28 }}>
+            {/* ── 5 Stat Cards ── */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6 md:mb-8">
                 <StatCard
                     label="Total Available Candidates"
                     value={stats?.available_candidates ?? 0}
@@ -125,7 +117,7 @@ export default function ClientDashboardPage() {
             </div>
 
             {/* ── 2 Charts ── */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 {/* Chart 1: Candidates by Role */}
                 <ChartCard title="Candidates by Role">
                     <RolesBarChart data={roles} />
@@ -135,19 +127,17 @@ export default function ClientDashboardPage() {
                 <ChartCard
                     title="Candidates by Date/Time"
                     extra={
-                        <div style={{ display: 'flex', gap: 4 }}>
+                        <div className="flex gap-1.5 bg-[var(--color-background)] p-1 rounded-lg border border-[var(--color-border)]">
                             {(['days', 'months', 'years'] as const).map(p => (
                                 <button
                                     key={p}
                                     onClick={() => setTimelinePeriod(p)}
-                                    style={{
-                                        padding: '5px 14px', borderRadius: 6,
-                                        border: `1px solid ${timelinePeriod === p ? BLUE : COLORS.border}`,
-                                        background: timelinePeriod === p ? COLORS.primaryAlpha : 'transparent',
-                                        color: timelinePeriod === p ? BLUE : COLORS.textMuted,
-                                        fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                                        textTransform: 'capitalize', transition: 'all 0.2s',
-                                    }}
+                                    className={`
+                                        px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md text-[10px] sm:text-xs font-bold capitalize transition-all duration-200
+                                        ${timelinePeriod === p
+                                            ? 'bg-white dark:bg-black/20 text-primary shadow-sm ring-1 ring-black/5'
+                                            : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] hover:bg-black/5 dark:hover:bg-white/5'}
+                                    `}
                                 >
                                     {p}
                                 </button>
@@ -158,7 +148,7 @@ export default function ClientDashboardPage() {
                     <TimelineChart data={timeline} />
                 </ChartCard>
             </div>
-        </>
+        </div>
     );
 }
 
@@ -168,19 +158,16 @@ export default function ClientDashboardPage() {
    ═══════════════════════════════════════════════════════════ */
 function StatCard({ label, value, icon }: { label: string; value: number; icon: React.ReactNode }) {
     return (
-        <div style={{
-            background: COLORS.card, border: `1px solid ${COLORS.border}`,
-            borderRadius: 14, padding: '18px 22px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.03)', transition: 'all 0.2s',
-        }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = BLUE; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = COLORS.border; e.currentTarget.style.transform = 'none'; }}
-        >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: COLORS.textTertiary, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
-                <span style={{ color: BLUE }}>{icon}</span>
+        <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 sm:p-5 shadow-sm hover:border-primary hover:-translate-y-0.5 transition-all duration-200 group">
+            <div className="flex justify-between items-center mb-2.5">
+                <span className="text-[10px] sm:text-[11px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider line-clamp-1 pr-2">
+                    {label}
+                </span>
+                <span className="text-primary group-hover:scale-110 transition-transform duration-200 shrink-0">
+                    {icon}
+                </span>
             </div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: COLORS.textPrimary, lineHeight: 1, letterSpacing: '-0.02em' }}>
+            <div className="text-2xl sm:text-3xl font-extrabold text-[var(--color-text-primary)] leading-none tracking-tight">
                 {value.toLocaleString()}
             </div>
         </div>
@@ -195,41 +182,39 @@ function ChartCard({ title, children, extra }: {
     title: string; children: React.ReactNode; extra?: React.ReactNode;
 }) {
     return (
-        <div style={{
-            background: COLORS.card, border: `1px solid ${COLORS.border}`,
-            borderRadius: 14, padding: 24, transition: 'border-color 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-        }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = BLUE; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = COLORS.border; }}
-        >
-            <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: COLORS.textPrimary, margin: 0 }}>{title}</h3>
-                {extra}
+        <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-4 sm:p-5 lg:p-6 shadow-sm hover:border-primary transition-colors duration-200 flex flex-col h-full w-full overflow-hidden">
+            <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                <h3 className="text-sm sm:text-base font-bold text-[var(--color-text-primary)] m-0">{title}</h3>
+                {extra && <div className="self-start sm:self-auto">{extra}</div>}
             </div>
-            {children}
+            {/* Wrapper ensures recharts container respects bounds */}
+            <div className="w-full flex-1 min-h-[250px] relative">
+                <div className="absolute inset-0">
+                    {children}
+                </div>
+            </div>
         </div>
     );
 }
 
 
 /* ═══════════════════════════════════════════════════════════
-   ROLES BAR CHART — Candidates by Role (horizontal)
+   ROLES BAR CHART
    ═══════════════════════════════════════════════════════════ */
 function RolesBarChart({ data }: { data: any[] }) {
     if (!data.length) return <EmptyState text="Add candidates with job titles to see role distribution" />;
 
     return (
-        <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={data.slice(0, 10)} layout="vertical" margin={{ left: 16, right: 20, top: 4, bottom: 4 }}>
-                <XAxis type="number" tick={{ fill: COLORS.textMuted, fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
+        <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data.slice(0, 10)} layout="vertical" margin={{ left: -10, right: 10, top: 4, bottom: 4 }}>
+                <XAxis type="number" tick={{ fill: 'var(--color-text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
                 <YAxis
                     type="category" dataKey="role"
-                    tick={{ fill: COLORS.textPrimary, fontSize: 12, fontWeight: 600 }}
-                    axisLine={false} tickLine={false} width={140} interval={0}
+                    tick={{ fill: 'var(--color-text-primary)', fontSize: 11, fontWeight: 600 }}
+                    axisLine={false} tickLine={false} width={100} interval={0}
                 />
                 <Tooltip {...TOOLTIP_STYLE} />
-                <Bar dataKey="count" radius={[0, 6, 6, 0]} barSize={18} fill={BLUE} />
+                <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={14} fill={COLORS.primary} />
             </BarChart>
         </ResponsiveContainer>
     );
@@ -237,30 +222,30 @@ function RolesBarChart({ data }: { data: any[] }) {
 
 
 /* ═══════════════════════════════════════════════════════════
-   TIMELINE CHART — Candidates by Date/Time (area/line)
+   TIMELINE CHART
    ═══════════════════════════════════════════════════════════ */
 function TimelineChart({ data }: { data: any[] }) {
     if (!data.length) return <EmptyState text="Timeline data appears as candidates are added" />;
 
     return (
-        <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={data} margin={{ left: 8, right: 16, top: 8, bottom: 4 }}>
+        <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data} margin={{ left: -20, right: 10, top: 8, bottom: 4 }}>
                 <defs>
                     <linearGradient id="tlGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor={BLUE} stopOpacity={0.15} />
-                        <stop offset="100%" stopColor={BLUE} stopOpacity={0} />
+                        <stop offset="0%" stopColor={COLORS.primary} stopOpacity={0.15} />
+                        <stop offset="100%" stopColor={COLORS.primary} stopOpacity={0} />
                     </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 6" stroke={COLORS.border} vertical={false} />
-                <XAxis dataKey="label" tick={{ fill: COLORS.textMuted, fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: COLORS.textMuted, fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                <CartesianGrid strokeDasharray="3 6" stroke="var(--color-border)" vertical={false} />
+                <XAxis dataKey="label" tick={{ fill: 'var(--color-text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: 'var(--color-text-muted)', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
                 <Tooltip {...TOOLTIP_STYLE} />
                 <Area
                     type="monotone" dataKey="count"
-                    stroke={BLUE} strokeWidth={2.5}
+                    stroke={COLORS.primary} strokeWidth={2.5}
                     fill="url(#tlGrad)"
-                    dot={{ r: 3, fill: BLUE, stroke: '#fff', strokeWidth: 2 }}
-                    activeDot={{ r: 5, fill: BLUE, stroke: '#fff', strokeWidth: 2 }}
+                    dot={{ r: 3, fill: COLORS.primary, stroke: 'var(--color-card)', strokeWidth: 2 }}
+                    activeDot={{ r: 5, fill: COLORS.primary, stroke: 'var(--color-card)', strokeWidth: 2 }}
                 />
             </AreaChart>
         </ResponsiveContainer>
@@ -273,8 +258,8 @@ function TimelineChart({ data }: { data: any[] }) {
    ═══════════════════════════════════════════════════════════ */
 function EmptyState({ text }: { text: string }) {
     return (
-        <div style={{ textAlign: 'center', padding: '40px 20px', color: COLORS.textMuted, fontSize: 13 }}>
-            <BarChart2 size={36} style={{ opacity: 0.3, marginBottom: 10 }} />
+        <div className="h-full flex flex-col items-center justify-center p-6 text-[var(--color-text-muted)] text-xs sm:text-sm text-center">
+            <BarChart2 size={32} className="opacity-30 mb-3" />
             <div>{text}</div>
         </div>
     );

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth/context';
 import ProtectedRoute from './ProtectedRoute';
+import { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
 
 const navigation = [
   {
@@ -36,55 +38,46 @@ const navigation = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   return (
     <ProtectedRoute>
-      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', fontFamily: 'Inter, sans-serif' }}>
+      <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row font-sans">
+
+        {/* Mobile overlays */}
+        {mobileOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-30 md:hidden"
+            onClick={() => setMobileOpen(false)}
+          />
+        )}
+
         {/* Sidebar */}
-        <aside style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          width: '256px',
-          backgroundColor: '#ffffff',
-          borderRight: '1px solid #e5e7eb',
-          display: 'flex',
-          flexDirection: 'column',
-          zIndex: 40,
-        }}>
+        <aside className={`
+          fixed md:sticky top-0 h-screen z-40 shrink-0 bg-white border-r border-gray-200 flex flex-col w-64 transition-transform duration-300 ease-in-out
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        `}>
           {/* Logo */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            height: '64px',
-            padding: '0 20px',
-            borderBottom: '1px solid #e5e7eb',
-            gap: '10px',
-          }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              backgroundColor: 'var(--color-primary)',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}>
+          <div className="flex items-center h-16 px-5 border-b border-gray-200 gap-2.5 shrink-0">
+            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center shrink-0">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
             <div>
-              <h1 style={{ fontSize: '16px', fontWeight: 700, color: '#111827', margin: 0, lineHeight: 1.2 }}>TRM Platform</h1>
-              <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>Admin Portal</p>
+              <h1 className="text-base font-bold text-gray-900 m-0 leading-tight">TRM Platform</h1>
+              <p className="text-xs text-gray-400 m-0">Admin Portal</p>
             </div>
           </div>
 
           {/* Navigation */}
-          <nav style={{ flex: 1, padding: '20px 16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px', padding: '0 8px', marginBottom: '8px' }}>
+          <nav className="flex-1 p-4 overflow-y-auto flex flex-col gap-2">
+            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-2 mb-2">
               Menu
             </p>
             {navigation.map((item) => {
@@ -93,20 +86,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Link
                   key={item.name}
                   href={item.href}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '12px 16px',
-                    borderRadius: '10px',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                    fontWeight: isActive ? 600 : 500,
-                    color: isActive ? 'var(--color-primary)' : '#4b5563',
-                    backgroundColor: isActive ? 'var(--color-primary-alpha)' : 'transparent',
-                    transition: 'all 0.15s',
-                  }}
+                  className={`
+                    flex items-center px-4 py-3 rounded-xl no-underline text-sm transition-all duration-150
+                    ${isActive
+                      ? 'font-semibold text-primary bg-[var(--color-primary-alpha)]'
+                      : 'font-medium text-gray-600 hover:bg-gray-100'
+                    }
+                  `}
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '12px', flexShrink: 0 }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3 shrink-0">
                     <path d={item.icon} />
                   </svg>
                   {item.name}
@@ -116,28 +104,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </nav>
 
           {/* User Info at Bottom */}
-          <div style={{ padding: '16px', borderTop: '1px solid #e5e7eb' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{
-                width: '36px',
-                height: '36px',
-                backgroundColor: 'var(--color-primary)',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                fontWeight: 600,
-                fontSize: '14px',
-                flexShrink: 0,
-              }}>
+          <div className="p-4 border-t border-gray-200">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center text-white font-semibold text-sm shrink-0">
                 {user?.name?.charAt(0) || 'A'}
               </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: '13px', fontWeight: 600, color: '#111827', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-900 m-0 truncate">
                   {user?.name || 'Admin'}
                 </p>
-                <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <p className="text-xs text-gray-400 m-0 truncate">
                   {user?.email || 'admin@trm.com'}
                 </p>
               </div>
@@ -146,35 +122,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </aside>
 
         {/* Main Content Area */}
-        <div style={{ marginLeft: '256px' }}>
+        <div className="flex-1 flex flex-col min-w-0">
           {/* Top Header Bar */}
-          <header style={{
-            height: '64px',
-            backgroundColor: '#ffffff',
-            borderBottom: '1px solid #e5e7eb',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            padding: '0 32px',
-            position: 'sticky',
-            top: 0,
-            zIndex: 30,
-          }}>
+          <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between md:justify-end px-4 sm:px-8 sticky top-0 z-20">
+            {/* Hamburger (Mobile only) */}
+            <button
+              className="p-1.5 -ml-1.5 rounded-lg hover:bg-gray-100 md:hidden text-gray-600"
+              onClick={() => setMobileOpen(true)}
+            >
+              <Menu size={20} />
+            </button>
+
             <button
               onClick={logout}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 16px',
-                fontSize: '14px',
-                fontWeight: 500,
-                color: '#dc2626',
-                backgroundColor: '#fef2f2',
-                border: '1px solid #fecaca',
-                borderRadius: '8px',
-                cursor: 'pointer',
-              }}
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg cursor-pointer hover:bg-red-100 transition-colors"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
@@ -184,8 +145,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </header>
 
           {/* Page Content */}
-          <main style={{ padding: '32px' }}>
-            {children}
+          <main className="p-4 sm:p-6 md:p-8 flex-1 overflow-x-hidden">
+            <div className="max-w-7xl mx-auto w-full">
+              {children}
+            </div>
           </main>
         </div>
       </div>

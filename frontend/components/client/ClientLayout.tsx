@@ -2,10 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { clientLogout, getClientMe } from '@/lib/api/clientPortal';
-import { LayoutDashboard, FileText, Users, Building, Settings, Zap, LogOut, ChevronLeft, ChevronRight, UsersRound, BarChart2, ListChecks, Activity } from 'lucide-react';
-import { COLORS } from '@/lib/theme';
+import { LayoutDashboard, FileText, Users, Settings, Zap, LogOut, ChevronLeft, ChevronRight, UsersRound, BarChart2, ListChecks, Activity, Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/client/ThemeToggle';
 
 const baseNavigation = [
@@ -19,28 +18,9 @@ const baseNavigation = [
     { name: 'Settings', href: '/client/settings', icon: <Settings size={18} />, roles: ['admin'] },
 ];
 
-
-/* ── Tooltip shown next to icon when sidebar is collapsed ─────────────────── */
 function NavTooltip({ label }: { label: string }) {
     return (
-        <span style={{
-            position: 'absolute',
-            left: '100%',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            marginLeft: 10,
-            background: 'var(--color-card)',
-            color: 'var(--color-text-primary)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 8,
-            padding: '5px 10px',
-            fontSize: 12,
-            fontWeight: 600,
-            whiteSpace: 'nowrap',
-            pointerEvents: 'none',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
-            zIndex: 200,
-        }}>
+        <span className="absolute left-full top-1/2 -translate-y-1/2 ml-2.5 bg-[var(--color-card)] text-[var(--color-text-primary)] border border-[var(--color-border)] rounded-lg py-1 px-2.5 text-xs font-semibold whitespace-nowrap pointer-events-none shadow-lg z-[200]">
             {label}
         </span>
     );
@@ -52,6 +32,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     const [client, setClient] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [collapsed, setCollapsed] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
     useEffect(() => {
@@ -61,73 +42,57 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             .finally(() => setLoading(false));
     }, [router]);
 
+    // Close mobile menu on route change
+    useEffect(() => {
+        setMobileOpen(false);
+    }, [pathname]);
+
     const handleLogout = async () => {
         await clientLogout();
         router.push('/login');
     };
 
     if (loading) return (
-        <div style={{ minHeight: '100vh', background: COLORS.background, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ width: 36, height: 36, border: `3px solid var(--color-border)`, borderTopColor: COLORS.primary, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
+            <div className="w-9 h-9 border-3 border-[var(--color-border)] border-t-primary rounded-full animate-spin" />
         </div>
     );
 
-    const W = collapsed ? 68 : 256;
+    const sidebarWidthClass = collapsed ? 'w-[68px]' : 'w-64';
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', background: COLORS.background }}>
-            <style>{`
+        <div className="flex flex-col md:flex-row min-h-screen bg-[var(--color-background)]">
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@400;500;600;700;800&display=swap');
-                @keyframes spin { to { transform: rotate(360deg); } }
-                .sidebar-inner { transition: width 0.28s cubic-bezier(0.4,0,0.2,1); will-change: width; }
-                .nav-link { transition: background 0.15s, color 0.15s; }
-                .nav-link:hover { background: rgba(255,255,255,0.12) !important; }
-                .collapse-btn:hover { background: rgba(255,255,255,0.1) !important; }
-                .signout-btn:hover  { background: rgba(255,255,255,0.14) !important; }
-            `}</style>
+                .font-heading { font-family: 'Varela Round', sans-serif; }
+            `}} />
+
+            {/* Mobile overlays */}
+            {mobileOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-30 md:hidden"
+                    onClick={() => setMobileOpen(false)}
+                />
+            )}
 
             {/* ── Sidebar ────────────────────────────────────────────── */}
-            <div
-                className="sidebar-inner"
-                style={{
-                    width: W,
-                    background: COLORS.sidebar,
-                    display: 'flex', flexDirection: 'column',
-                    position: 'sticky', top: 0, height: '100vh',
-                    zIndex: 20, flexShrink: 0,
-                    color: '#FFFFFF',
-                    boxShadow: '2px 0 12px rgba(0,0,0,0.08)',
-                    overflow: 'visible',            // allow tooltip overflow
-                }}
+            <aside
+                className={`
+                    fixed md:sticky top-0 h-screen z-40 shrink-0 bg-[#4A6B50] dark:bg-[#141414] text-white flex flex-col shadow-xl transition-all duration-300 ease-in-out
+                    ${mobileOpen ? 'left-0 w-64 translate-x-0' : '-translate-x-full md:translate-x-0'}
+                    ${sidebarWidthClass}
+                `}
             >
                 {/* ── Logo ─────────────────────────────────────────── */}
-                <div style={{
-                    padding: collapsed ? '18px 0' : '18px 18px',
-                    borderBottom: '1px solid rgba(255,255,255,0.08)',
-                    display: 'flex', alignItems: 'center',
-                    justifyContent: collapsed ? 'center' : 'flex-start',
-                    minHeight: 68, overflow: 'hidden',
-                }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <div style={{
-                            width: 32, height: 32, borderRadius: 9, background: '#FFFFFF',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            color: COLORS.primary, flexShrink: 0,
-                        }}>
-                            <Zap size={18} fill={COLORS.primary} />
+                <div className={`p-4 md:p-[18px] border-b border-white/10 flex items-center min-h-[68px] overflow-hidden ${collapsed && !mobileOpen ? 'md:justify-center' : ''}`}>
+                    <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-primary shrink-0 shadow-sm">
+                            <Zap size={18} className="fill-current text-[#4A6B50] dark:text-[#5D8564]" />
                         </div>
-                        {/* Text fades out — but sidebar width handles clipping */}
-                        <div style={{
-                            overflow: 'hidden', whiteSpace: 'nowrap',
-                            maxWidth: collapsed ? 0 : 180,
-                            opacity: collapsed ? 0 : 1,
-                            transition: 'max-width 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.2s',
-                        }}>
-                            <div style={{ fontSize: 14, fontWeight: 800, color: '#FFFFFF', fontFamily: "'Varela Round', sans-serif" }}>
-                                Nebula
-                            </div>
-                            <div style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        <div className={`overflow-hidden transition-all duration-300 ${collapsed && !mobileOpen ? 'md:max-w-0 md:opacity-0' : 'max-w-[180px] opacity-100 whitespace-nowrap'}`}>
+                            <div className="text-sm font-extrabold text-white font-heading">Nebula</div>
+                            <div className="text-[10px] font-semibold text-white/55 uppercase tracking-wider">
                                 {client?.plan || 'free'} · {client?.role || 'admin'}
                             </div>
                         </div>
@@ -135,7 +100,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </div>
 
                 {/* ── Nav items ─────────────────────────────────────── */}
-                <nav style={{ flex: 1, padding: '10px 8px', display: 'flex', flexDirection: 'column', gap: 2, overflowX: 'hidden', overflowY: 'auto' }}>
+                <nav className="flex-1 p-2 flex flex-col gap-0.5 overflow-x-hidden overflow-y-auto">
                     {baseNavigation
                         .filter(item => item.roles.includes(client?.role || 'admin'))
                         .map(item => {
@@ -143,140 +108,95 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                             return (
                                 <div
                                     key={item.name}
-                                    style={{ position: 'relative' }}
+                                    className="relative group block"
                                     onMouseEnter={() => collapsed && setHoveredNav(item.name)}
                                     onMouseLeave={() => setHoveredNav(null)}
                                 >
                                     <Link
                                         href={item.href}
-                                        className="nav-link"
-                                        style={{
-                                            display: 'flex', alignItems: 'center',
-                                            padding: collapsed ? '11px 0' : '10px 14px',
-                                            justifyContent: collapsed ? 'center' : 'flex-start',
-                                            borderRadius: 10,
-                                            textDecoration: 'none', fontSize: 13, fontWeight: isActive ? 700 : 500,
-                                            color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.8)',
-                                            background: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
-                                            gap: collapsed ? 0 : 11, width: '100%',
-                                        }}
+                                        className={`flex items-center rounded-xl no-underline text-[13px] font-semibold transition-colors duration-150 py-2.5 px-3.5 
+                                            ${isActive ? 'text-white bg-white/15 font-bold' : 'text-white/80 hover:bg-white/10'}
+                                            ${collapsed && !mobileOpen ? 'md:justify-center px-0 py-3' : 'gap-3 w-full'}
+                                        `}
                                     >
-                                        <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{item.icon}</span>
-                                        <span style={{
-                                            overflow: 'hidden', whiteSpace: 'nowrap',
-                                            maxWidth: collapsed ? 0 : 160, opacity: collapsed ? 0 : 1,
-                                            transition: 'max-width 0.26s cubic-bezier(0.4,0,0.2,1), opacity 0.18s',
-                                        }}>
+                                        <span className="flex items-center shrink-0">{item.icon}</span>
+                                        <span className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${collapsed && !mobileOpen ? 'md:max-w-0 md:opacity-0' : 'max-w-[160px] opacity-100'}`}>
                                             {item.name}
                                         </span>
                                     </Link>
                                     {/* Tooltip when collapsed */}
-                                    {collapsed && hoveredNav === item.name && <NavTooltip label={item.name} />}
+                                    {collapsed && !mobileOpen && hoveredNav === item.name && <NavTooltip label={item.name} />}
                                 </div>
                             );
                         })}
                 </nav>
 
                 {/* ── Bottom: user + logout + collapse ──────────────── */}
-                <div style={{
-                    padding: collapsed ? '14px 8px' : '14px',
-                    borderTop: '1px solid rgba(255,255,255,0.08)',
-                    display: 'flex', flexDirection: 'column',
-                    alignItems: collapsed ? 'center' : 'stretch',
-                    gap: 6,
-                }}>
+                <div className={`p-3.5 border-t border-white/10 flex flex-col gap-1.5 ${collapsed && !mobileOpen ? 'md:items-center' : ''}`}>
                     {/* Email */}
-                    <div style={{
-                        fontSize: 11, color: 'rgba(255,255,255,0.5)',
-                        overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
-                        maxWidth: collapsed ? 0 : 220, opacity: collapsed ? 0 : 1,
-                        height: collapsed ? 0 : 16,
-                        transition: 'max-width 0.26s, opacity 0.18s, height 0.22s',
-                    }}>
+                    <div className={`text-[11px] text-white/50 overflow-hidden whitespace-nowrap text-ellipsis transition-all duration-300 ${collapsed && !mobileOpen ? 'md:max-w-0 md:h-0 md:opacity-0' : 'max-w-[220px] h-4 opacity-100'}`}>
                         {client?.email}
                     </div>
 
                     {/* Sign Out */}
                     <button
-                        className="signout-btn"
                         onClick={handleLogout}
                         title="Sign Out"
-                        style={{
-                            width: collapsed ? 44 : '100%', height: 36, padding: 0,
-                            background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)',
-                            borderRadius: 8, color: '#FFFFFF', fontSize: 12, fontWeight: 600,
-                            cursor: 'pointer', display: 'flex', alignItems: 'center',
-                            justifyContent: 'center', gap: collapsed ? 0 : 7,
-                            transition: 'width 0.26s, background 0.15s',
-                        }}
+                        className={`bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white text-xs font-semibold cursor-pointer flex items-center justify-center transition-all duration-200 h-9 p-0
+                            ${collapsed && !mobileOpen ? 'md:w-11' : 'w-full gap-2'}
+                        `}
                     >
                         <LogOut size={14} />
-                        <span style={{
-                            maxWidth: collapsed ? 0 : 120, opacity: collapsed ? 0 : 1,
-                            overflow: 'hidden', whiteSpace: 'nowrap',
-                            transition: 'max-width 0.26s, opacity 0.18s',
-                        }}>Sign Out</span>
+                        <span className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${collapsed && !mobileOpen ? 'md:max-w-0 md:opacity-0' : 'max-w-[120px] opacity-100'}`}>
+                            Sign Out
+                        </span>
                     </button>
 
-                    {/* Collapse toggle */}
+                    {/* Collapse toggle (Desktop only) */}
                     <button
-                        className="collapse-btn"
                         onClick={() => setCollapsed(c => !c)}
                         title={collapsed ? 'Expand' : 'Collapse'}
-                        style={{
-                            width: collapsed ? 44 : '100%', height: 30, padding: 0,
-                            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-                            borderRadius: 8, color: 'rgba(255,255,255,0.55)',
-                            cursor: 'pointer', display: 'flex', alignItems: 'center',
-                            justifyContent: 'center', gap: collapsed ? 0 : 7,
-                            fontSize: 11, fontWeight: 600,
-                            transition: 'width 0.26s, background 0.15s',
-                        }}
+                        className={`hidden md:flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white/55 cursor-pointer text-[11px] font-semibold transition-all duration-200 h-7.5 p-0 mt-1
+                            ${collapsed ? 'w-11' : 'w-full gap-2'}
+                        `}
                     >
                         {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
-                        <span style={{
-                            maxWidth: collapsed ? 0 : 80, opacity: collapsed ? 0 : 1,
-                            overflow: 'hidden', whiteSpace: 'nowrap',
-                            transition: 'max-width 0.26s, opacity 0.18s',
-                        }}>Collapse</span>
+                        <span className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[80px] opacity-100'}`}>
+                            Collapse
+                        </span>
                     </button>
                 </div>
-            </div>
+            </aside>
 
             {/* ── Main area ──────────────────────────────────────────── */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+            <div className="flex-1 flex flex-col min-w-0 w-full">
                 {/* Top bar */}
-                <div style={{
-                    height: 56, background: 'var(--color-topbar-bg)', backdropFilter: 'blur(12px)',
-                    borderBottom: `1px solid var(--color-topbar-border, var(--color-border))`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '0 32px', zIndex: 15, position: 'sticky', top: 0,
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-                }}>
-                    <h2 style={{ fontSize: 14, fontWeight: 700, color: COLORS.textSecondary, margin: 0, letterSpacing: '-0.01em', fontFamily: "'Varela Round', sans-serif" }}>
-                        {baseNavigation.find(n => pathname === n.href || pathname?.startsWith(n.href + '/'))?.name || 'Client Portal'}
-                    </h2>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div className="h-14 bg-[var(--color-topbar-bg)] backdrop-blur-md border-b border-[var(--color-topbar-border,var(--color-border))] flex items-center justify-between px-4 sm:px-6 md:px-8 z-10 sticky top-0 shadow-sm transition-all duration-200">
+                    <div className="flex items-center gap-3">
+                        {/* Hamburger (Mobile only) */}
+                        <button
+                            className="p-1.5 -ml-1.5 rounded-lg hover:bg-[var(--color-hover)] md:hidden text-[var(--color-text-secondary)]"
+                            onClick={() => setMobileOpen(true)}
+                        >
+                            <Menu size={20} />
+                        </button>
+
+                        <h2 className="text-sm font-bold text-[var(--color-text-secondary)] m-0 tracking-tight font-heading truncate max-w-[150px] sm:max-w-none">
+                            {baseNavigation.find(n => pathname === n.href || pathname?.startsWith(n.href + '/'))?.name || 'Client Portal'}
+                        </h2>
+                    </div>
+
+                    <div className="flex items-center gap-3">
                         <ThemeToggle />
-                        <span style={{
-                            fontSize: 10, fontWeight: 700,
-                            background: COLORS.success.bg, color: COLORS.success.text,
-                            border: `1px solid ${COLORS.success.border}`,
-                            padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase',
-                        }}>{client?.plan || 'beta'}</span>
+                        <span className="hidden sm:inline-block text-[10px] font-bold bg-[var(--color-success-bg)] text-[var(--color-success-text)] border border-[var(--color-success-border)] py-1 px-2.5 rounded-full uppercase truncate max-w-[100px]">
+                            {client?.plan || 'beta'}
+                        </span>
                     </div>
                 </div>
 
                 {/* Page content */}
-                <div style={{ padding: 32, color: COLORS.textPrimary, flex: 1, transition: 'padding 0.28s cubic-bezier(0.4,0,0.2,1)' }}>
-                    <style>{`
-                        .page-content-area > div[style*='max-width'],
-                        .page-content-area > div[style*='maxWidth'] {
-                            margin-left: auto !important;
-                            margin-right: auto !important;
-                        }
-                    `}</style>
-                    <div className="page-content-area" style={{ width: '100%' }}>
+                <div className="p-4 sm:p-6 md:p-8 text-[var(--color-text-primary)] flex-1 transition-all duration-300 w-full overflow-x-hidden">
+                    <div className="w-full mx-auto max-w-7xl">
                         {children}
                     </div>
                 </div>
