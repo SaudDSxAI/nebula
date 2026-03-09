@@ -44,6 +44,7 @@ _default_origins = [
 _extra = os.environ.get("ALLOWED_ORIGINS", "")
 _origins = _default_origins + [o.strip() for o in _extra.split(",") if o.strip()]
 _origins.append("https://nebula-production-7a71.up.railway.app")
+_origins.append("https://backend-production-6bf59.up.railway.app")
 
 app.add_middleware(
     CORSMiddleware,
