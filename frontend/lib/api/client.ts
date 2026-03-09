@@ -4,7 +4,10 @@
  */
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+let rawUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+if (rawUrl.endsWith('/api')) rawUrl = rawUrl.slice(0, -4);
+if (rawUrl.endsWith('/')) rawUrl = rawUrl.slice(0, -1);
+const API_BASE_URL = rawUrl;
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
