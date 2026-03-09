@@ -103,14 +103,15 @@ async def init_db():
                 ("benefits", "TEXT"), ("portal_headline", "VARCHAR(255)"), ("portal_tagline", "VARCHAR(255)"), 
                 ("portal_contact_email", "VARCHAR(255)"), ("portal_stat1_num", "VARCHAR(50)"), ("portal_stat1_label", "VARCHAR(255)"),
                 ("portal_stat2_num", "VARCHAR(50)"), ("portal_stat2_label", "VARCHAR(255)"), ("portal_stat3_num", "VARCHAR(50)"), ("portal_stat3_label", "VARCHAR(255)"),
-                ("logo_scale", "FLOAT"), ("logo_offset_x", "FLOAT"), ("logo_offset_y", "FLOAT"),
+                ("logo_scale", "VARCHAR(10)"), ("logo_offset_x", "FLOAT"), ("logo_offset_y", "FLOAT"),
                 ("gdpr_consent", "BOOLEAN"), ("gdpr_consent_date", "TIMESTAMP")
             ]:
                 await conn.execute(text(f"ALTER TABLE clients ADD COLUMN IF NOT EXISTS {col} {ctype}"))
             
-            # Fix incorrectly added JSONB columns
+            # Fix incorrectly added JSONB/FLOAT columns
             await conn.execute(text("ALTER TABLE clients ALTER COLUMN company_data TYPE TEXT USING company_data::text"))
             await conn.execute(text("ALTER TABLE clients ALTER COLUMN benefits TYPE TEXT USING benefits::text"))
+            await conn.execute(text("ALTER TABLE clients ALTER COLUMN logo_scale TYPE VARCHAR(10) USING logo_scale::varchar"))
 
             logger.info("Migration: clients extended columns ensured")
             
