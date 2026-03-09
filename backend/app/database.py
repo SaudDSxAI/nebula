@@ -58,10 +58,25 @@ async def init_db():
                 text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255)")
             )
             await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS age INTEGER")
+            )
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS gender VARCHAR(50)")
+            )
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS nationality VARCHAR(100)")
+            )
+            await conn.execute(
                 text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS notice_period VARCHAR(100)")
             )
             await conn.execute(
                 text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS work_authorization VARCHAR(100)")
+            )
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS employment_status VARCHAR(100)")
+            )
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS willing_to_relocate VARCHAR(50)")
             )
             await conn.execute(
                 text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS languages TEXT")
@@ -69,7 +84,14 @@ async def init_db():
             await conn.execute(
                 text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS tags TEXT")
             )
-            logger.info("Migration: candidates columns ensured (password_hash, notice_period, work_authorization, languages, tags)")
+            await conn.execute(
+                text("ALTER TABLE candidates ADD COLUMN IF NOT EXISTS extra_data JSONB")
+            )
+            logger.info(
+                "Migration: candidates columns ensured "
+                "(password_hash, age, gender, nationality, notice_period, work_authorization, "
+                "employment_status, willing_to_relocate, languages, tags, extra_data)"
+            )
             # Ensure messages table exists
             await conn.execute(text("""
                 CREATE TABLE IF NOT EXISTS messages (
@@ -92,9 +114,10 @@ async def init_db():
                 ("company_name", "VARCHAR(255)"), ("role_title", "VARCHAR(255)"),
                 ("facilities", "TEXT"), ("pay_type", "VARCHAR(50)"),
                 ("notes", "TEXT"), ("raw_text", "TEXT"), ("structured_data", "TEXT"),
+                ("assigned_to_user_id", "INTEGER"),
             ]:
                 await conn.execute(text(f"ALTER TABLE requirements ADD COLUMN IF NOT EXISTS {col} {ctype}"))
-            logger.info("Migration: requirements extended columns ensured")
+            logger.info("Migration: requirements extended columns ensured (including assigned_to_user_id)")
 
             # Ensure new client columns exist
             for col, ctype in [
