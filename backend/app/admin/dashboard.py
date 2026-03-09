@@ -201,41 +201,22 @@ async def get_client_growth(
 
     data_points: List[GrowthDataPoint] = []
 
-    # Generate data points for each day
+    # Fetch all relevant clients once
+    clients_result = await db.execute(
+        select(Client.created_at, Client.status).where(Client.deleted_at.is_(None))
+    )
+    clients_data = clients_result.fetchall()
+
     for i in range(days_count + 1):
         date = start_date + timedelta(days=i)
         date_str = date.strftime("%Y-%m-%d")
-
-        # Count total clients up to this date
-        total_result = await db.execute(
-            select(func.count(Client.id)).where(
-                Client.deleted_at.is_(None),
-                Client.created_at <= date
-            )
-        )
-        total_clients = total_result.scalar() or 0
-
-        # Count new clients on this specific date
+        
         date_start = date.replace(hour=0, minute=0, second=0, microsecond=0)
         date_end = date_start + timedelta(days=1)
-        new_result = await db.execute(
-            select(func.count(Client.id)).where(
-                Client.deleted_at.is_(None),
-                Client.created_at >= date_start,
-                Client.created_at < date_end
-            )
-        )
-        new_clients = new_result.scalar() or 0
 
-        # Count active clients at this date
-        active_result = await db.execute(
-            select(func.count(Client.id)).where(
-                Client.deleted_at.is_(None),
-                Client.created_at <= date,
-                Client.status == "active"
-            )
-        )
-        active_clients = active_result.scalar() or 0
+        total_clients = sum(1 for c in clients_data if c.created_at and c.created_at <= date)
+        new_clients = sum(1 for c in clients_data if c.created_at and date_start <= c.created_at < date_end)
+        active_clients = sum(1 for c in clients_data if c.created_at and c.created_at <= date and c.status == "active")
 
         data_points.append(
             GrowthDataPoint(

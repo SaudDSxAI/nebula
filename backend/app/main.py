@@ -164,7 +164,7 @@ _os.makedirs(_logos_dir, exist_ok=True)
 app.mount("/static/logos", StaticFiles(directory=_logos_dir), name="logos")
 
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
     """Root endpoint"""
     return {
