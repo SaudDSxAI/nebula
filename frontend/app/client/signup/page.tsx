@@ -82,11 +82,8 @@ export default function ClientSignupPage() {
     };
 
     return (
-        <div style={{
-            height: '100vh', display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center',
-            background: BG, fontFamily: FONT, padding: '0 16px',
-            overflow: 'hidden',
+        <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-6 overflow-y-auto" style={{
+            background: BG, fontFamily: FONT,
         }}>
             {/* Global styles — using suppressHydrationWarning to avoid re-render flickers */}
             <style>{`
@@ -96,15 +93,12 @@ export default function ClientSignupPage() {
                 .book-btn:hover { background: rgba(74,107,80,0.06) !important; border-color: ${PRIMARY} !important; color: ${PRIMARY} !important; }
             `}</style>
 
-            <div style={{ width: '100%', maxWidth: 820, display: 'flex', gap: 24, alignItems: 'stretch' }}>
+            <div className="w-full max-w-[820px] flex flex-col md:flex-row gap-6 items-stretch py-8">
 
                 {/* ── Left: Trial info panel ── */}
-                <div style={{
-                    flex: '0 0 260px',
+                <div className="md:w-[260px] shrink-0 p-6 md:p-7 flex flex-col justify-center rounded-[18px]" style={{
                     background: `rgba(74,107,80,0.06)`,
                     border: `1.5px solid ${BORDER}`,
-                    borderRadius: 18, padding: '28px 24px',
-                    display: 'flex', flexDirection: 'column', justifyContent: 'center',
                 }}>
                     {/* Logo */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 28 }}>
@@ -144,13 +138,10 @@ export default function ClientSignupPage() {
                 </div>
 
                 {/* ── Right: Form card ── */}
-                <div style={{
-                    flex: 1,
+                <div className="flex-1 p-6 sm:p-8 flex flex-col justify-center rounded-[18px]" style={{
                     background: SURFACE,
                     border: `1px solid ${BORDER}`,
-                    borderRadius: 18, padding: '28px 28px',
                     boxShadow: '0 4px 32px rgba(74,107,80,0.08)',
-                    display: 'flex', flexDirection: 'column', justifyContent: 'center',
                 }}>
                     <h1 style={{ fontFamily: HEAD_FONT, fontSize: 20, fontWeight: 700, color: TEXT, margin: '0 0 4px' }}>
                         Create your account
@@ -170,7 +161,7 @@ export default function ClientSignupPage() {
 
                     <form onSubmit={handleSubmit}>
                         {/* Company + Email row */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
                             <div>
                                 <label style={lbl}>Company Name</label>
                                 <input
@@ -209,7 +200,7 @@ export default function ClientSignupPage() {
                         </div>
 
                         {/* Password row */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 18 }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-[18px]">
                             <div>
                                 <label style={lbl}>Password</label>
                                 <div style={{ position: 'relative' }}>
