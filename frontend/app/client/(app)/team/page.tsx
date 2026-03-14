@@ -270,7 +270,7 @@ export default function TeamPage() {
             <div style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '13px 20px', marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: 'var(--color-text-primary)' }}>All Users</h3>
-                    <span style={{ fontSize: 12, fontWeight: 700, background: 'rgba(2,116,189,0.1)', color: PRIMARY, padding: '3px 10px', borderRadius: 12 }}>{members.length}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, background: 'rgba(74,107,80,0.1)', color: PRIMARY, padding: '3px 10px', borderRadius: 12 }}>{members.length}</span>
                 </div>
             </div>
 

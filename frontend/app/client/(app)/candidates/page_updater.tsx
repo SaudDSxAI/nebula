@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 const statusColors: Record<string, string> = {
-    applied: '#64748b', screening: '#0274BD', interviewing: '#F57251',
+    applied: '#64748b', screening: '#4A6B50', interviewing: '#E0A800',
     offered: '#ca8a04', accepted: '#15803d', rejected: '#dc2626', withdrawn: '#64748b',
 };
 
@@ -214,7 +214,7 @@ export default function CandidateDetailPage() {
                     background: '#FFFFFF', border: `1px solid ${COLORS.border}`, borderRadius: '12px',
                     color: COLORS.textPrimary, flex: 1, minWidth: '240px', boxShadow: '0 2px 4px rgba(0,0,0,0.01)'
                 }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(245, 114, 81, 0.1)', color: '#F57251', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(224, 168, 0, 0.1)', color: '#E0A800', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <MapPin size={18} />
                     </div>
                     <div>

@@ -62,7 +62,7 @@ export default function WorkloadPage() {
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @keyframes spin{to{transform:rotate(360deg)}}
-                .req-row:hover{background:rgba(2,116,189,0.04)!important;border-color:rgba(2,116,189,0.2)!important;}
+                .req-row:hover{background:rgba(74,107,80,0.04)!important;border-color:rgba(74,107,80,0.2)!important;}
                 .member-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08)!important;}
             ` }} />
 
@@ -120,7 +120,7 @@ export default function WorkloadPage() {
                                 {/* Card Header */}
                                 <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-background)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                        <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(2,116,189,0.1)', color: PRIMARY, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 14, flexShrink: 0 }}>
+                                        <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(74,107,80,0.1)', color: PRIMARY, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 14, flexShrink: 0 }}>
                                             {initials}
                                         </div>
                                         <div>

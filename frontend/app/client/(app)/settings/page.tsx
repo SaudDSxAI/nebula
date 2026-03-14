@@ -456,7 +456,7 @@ export default function SettingsPage() {
 
     return (
         <div style={{ maxWidth: 760, margin: '0 auto' }}>
-            <style dangerouslySetInnerHTML={{ __html: '@keyframes spin{to{transform:rotate(360deg)}} @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}} input:focus{border-color:#0274BD!important;background:#fff!important}' }} />
+            <style dangerouslySetInnerHTML={{ __html: '@keyframes spin{to{transform:rotate(360deg)}} @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}} input:focus{border-color:#4A6B50!important;background:#fff!important}' }} />
 
             {/* ── Toasts ──────────────────────────────────────────────── */}
             <div style={{ position: 'fixed', top: 24, right: 24, zIndex: 9999, display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -484,15 +484,15 @@ export default function SettingsPage() {
 
             {/* ── Profile Banner ───────────────────────────────────────── */}
             {profile && (
-                <div style={{ ...card, display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, background: 'linear-gradient(135deg, rgba(2,116,189,0.06), rgba(2,116,189,0.02))', borderColor: 'rgba(2,116,189,0.15)' }}>
-                    <div style={{ width: 56, height: 56, borderRadius: 14, background: `rgba(2,116,189,0.1)`, color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, fontWeight: 800, flexShrink: 0 }}>
+                <div style={{ ...card, display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, background: 'linear-gradient(135deg, rgba(74,107,80,0.06), rgba(74,107,80,0.02))', borderColor: 'rgba(74,107,80,0.15)' }}>
+                    <div style={{ width: 56, height: 56, borderRadius: 14, background: `rgba(74,107,80,0.1)`, color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, fontWeight: 800, flexShrink: 0 }}>
                         {profile.company_name?.charAt(0).toUpperCase() || '?'}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontWeight: 800, fontSize: 16, color: 'var(--color-text-primary)' }}>{profile.company_name}</div>
                         <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginTop: 2 }}>{profile.email}</div>
                         <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
-                            <span style={{ padding: '2px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700, background: 'rgba(2,116,189,0.1)', color: 'var(--color-primary)', textTransform: 'uppercase' }}>{profile.plan || 'free'} plan</span>
+                            <span style={{ padding: '2px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700, background: 'rgba(74,107,80,0.1)', color: 'var(--color-primary)', textTransform: 'uppercase' }}>{profile.plan || 'free'} plan</span>
                             <span style={{ padding: '2px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700, background: 'rgba(16,185,129,0.1)', color: '#10b981', textTransform: 'uppercase' }}>Active</span>
                             {profile.unique_subdomain && (
                                 <span style={{ padding: '2px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, background: 'var(--color-background)', color: 'var(--color-text-secondary)' }}>

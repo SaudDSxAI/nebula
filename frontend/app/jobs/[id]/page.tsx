@@ -234,7 +234,7 @@ export default function JobDetailPage() {
                                 padding: '14px 36px', background: COLORS.primary, color: '#fff',
                                 border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 16,
                                 cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8,
-                                boxShadow: '0 4px 14px rgba(2, 116, 189, 0.3)',
+                                boxShadow: '0 4px 14px rgba(74, 107, 80, 0.3)',
                                 transition: 'all 0.2s',
                             }}>
                                 Apply Now
@@ -364,7 +364,7 @@ export default function JobDetailPage() {
                                     width: '100%', padding: 14, background: COLORS.primary, color: '#fff',
                                     border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 15,
                                     cursor: 'pointer', transition: 'background 0.2s',
-                                    boxShadow: '0 4px 14px rgba(2, 116, 189, 0.25)',
+                                    boxShadow: '0 4px 14px rgba(74, 107, 80, 0.25)',
                                 }}>
                                     Apply for this Job
                                 </button>

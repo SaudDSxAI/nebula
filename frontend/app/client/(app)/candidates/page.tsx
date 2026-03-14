@@ -226,7 +226,7 @@ export default function CandidatesListPage() {
                 {smartSearchApplied && (
                     <div onClick={resetFilters} style={{
                         marginTop: 10, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 10px',
-                        background: 'rgba(2, 116, 189, 0.1)', color: BLUE, borderRadius: 12, fontSize: 12, fontWeight: 600, cursor: 'pointer'
+                        background: 'rgba(74, 107, 80, 0.1)', color: BLUE, borderRadius: 12, fontSize: 12, fontWeight: 600, cursor: 'pointer'
                     }}>
                         <Check size={12} /> AI filters applied. Click to clear
                     </div>
@@ -510,7 +510,7 @@ export default function CandidatesListPage() {
                                     borderBottom: `1px solid ${COLORS.border}50`
                                 }}>
                                     <div style={{
-                                        width: 48, height: 48, borderRadius: '50%', background: assignedMode ? 'rgba(52, 211, 153, 0.15)' : 'rgba(2, 116, 189, 0.1)',
+                                        width: 48, height: 48, borderRadius: '50%', background: assignedMode ? 'rgba(52, 211, 153, 0.15)' : 'rgba(74, 107, 80, 0.1)',
                                         color: assignedMode ? '#10b981' : BLUE, display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         fontSize: 16, fontWeight: 800, flexShrink: 0
                                     }}>

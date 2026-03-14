@@ -399,7 +399,7 @@ export default function RequirementDetailPage() {
                         <div style={{ position: 'relative' }}>
                             <button onClick={() => setShowAssignTeam(!showAssignTeam)} style={{
                                 padding: '4px 12px', fontSize: 12, fontWeight: 600, borderRadius: 8,
-                                background: 'rgba(2,116,189,0.1)', border: `1px solid ${COLORS.primary}30`, color: COLORS.primary, cursor: 'pointer',
+                                background: 'rgba(74,107,80,0.1)', border: `1px solid ${COLORS.primary}30`, color: COLORS.primary, cursor: 'pointer',
                             }}>
                                 <User size={12} /> {req.assigned_user ? 'Reassign' : 'Assign'}
                             </button>
@@ -489,7 +489,7 @@ export default function RequirementDetailPage() {
                                         padding: '12px 16px', border: `1px solid ${COLORS.border}`, borderRadius: '10px', marginBottom: '8px',
                                         transition: 'background 0.15s',
                                     }}
-                                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(2, 116, 189, 0.05)'}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(74, 107, 80, 0.05)'}
                                         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                                     >
                                         <div>

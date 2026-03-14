@@ -55,9 +55,9 @@ interface CvMessage { role: 'user' | 'assistant'; content: string; }
 interface Msg { id: number; sender_type: string; sender_name: string; message: string; is_read: boolean; created_at: string | null; }
 
 const C = {
-    bg: '#0F0F0F', card: '#1A1A1A', border: 'rgba(255,255,255,0.09)',
-    accent: '#4A6B50', accentHover: '#3A5540', accentLight: 'rgba(74,107,80,0.12)',
-    gold: '#E0A800', text: '#EFEFEF', muted: '#888888',
+    bg: '#0F0F0F', card: '#1F1F1F', border: 'rgba(255,255,255,0.09)',
+    accent: '#5D8564', accentHover: '#4A6B50', accentLight: 'rgba(93,133,100,0.15)',
+    gold: '#E0A800', text: '#FFFFFF', muted: '#CCCCCC',
     success: '#4ADE80', warning: '#E0A800', danger: '#D64545',
     input: '#1F1F1F', white: '#FFFFFF',
 };

@@ -143,7 +143,7 @@ export default function MonitoringPage() {
 
             {/* ─── Summary pills ────────────────────────────────────────── */}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
-                <span style={{ padding: '5px 14px', background: 'rgba(2,116,189,0.1)', borderRadius: 20, fontSize: 12, fontWeight: 700, color: BLUE }}>
+                <span style={{ padding: '5px 14px', background: 'rgba(74,107,80,0.1)', borderRadius: 20, fontSize: 12, fontWeight: 700, color: BLUE }}>
                     {total} Total Candidates
                 </span>
                 {STAGE_ORDER.filter(s => totalByStage(s) > 0).map(s => {

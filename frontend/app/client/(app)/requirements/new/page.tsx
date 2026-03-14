@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import apiClient from '@/lib/api/client';
 
-const PRIMARY = '#0274BD';
+const PRIMARY = '#4A6B50';
 
 export default function NewRequirementPage() {
     const router = useRouter();
@@ -103,7 +103,7 @@ export default function NewRequirementPage() {
                 {/* Parsed Summary */}
                 <div style={s.card}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                        <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `rgba(2,116,189,0.1)`, color: PRIMARY, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>🤖</div>
+                        <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `rgba(74,107,80,0.1)`, color: PRIMARY, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>🤖</div>
                         <div>
                             <div style={{ fontWeight: 700, fontSize: '15px', color: '#0f172a' }}>AI-Extracted Data</div>
                             <div style={{ fontSize: '12px', color: '#94a3b8' }}>Stored as structured JSON in the database</div>
@@ -137,7 +137,7 @@ export default function NewRequirementPage() {
                             <span style={s.infoLabel}>Skills / Certifications</span>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
                                 {skills.map((sk: string) => (
-                                    <span key={sk} style={{ padding: '4px 12px', borderRadius: '20px', background: 'rgba(2,116,189,0.08)', color: PRIMARY, fontSize: '12px', fontWeight: 600 }}>
+                                    <span key={sk} style={{ padding: '4px 12px', borderRadius: '20px', background: 'rgba(74,107,80,0.08)', color: PRIMARY, fontSize: '12px', fontWeight: 600 }}>
                                         {sk}
                                     </span>
                                 ))}
@@ -190,7 +190,7 @@ export default function NewRequirementPage() {
 
             <div style={s.card}>
                 {/* How it works */}
-                <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', background: 'rgba(2,116,189,0.04)', border: '1px solid rgba(2,116,189,0.15)', borderRadius: '10px', padding: '14px 18px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', background: 'rgba(74,107,80,0.04)', border: '1px solid rgba(74,107,80,0.15)', borderRadius: '10px', padding: '14px 18px', flexWrap: 'wrap' }}>
                     {[
                         ['📋', 'Paste raw text', 'Any format: email, WhatsApp, JD, notes'],
                         ['🤖', 'AI parses it', 'Extracts title, skills, salary, visa info…'],
@@ -240,7 +240,7 @@ export default function NewRequirementPage() {
                 </div>
 
                 {parsing && (
-                    <div style={{ marginTop: '16px', padding: '14px 18px', background: 'rgba(2,116,189,0.05)', border: '1px solid rgba(2,116,189,0.15)', borderRadius: '10px', fontSize: '14px', color: PRIMARY, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ marginTop: '16px', padding: '14px 18px', background: 'rgba(74,107,80,0.05)', border: '1px solid rgba(74,107,80,0.15)', borderRadius: '10px', fontSize: '14px', color: PRIMARY, display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <span style={{ fontSize: '20px' }}>🤖</span>
                         <div>
                             <div style={{ fontWeight: 600 }}>AI is extracting requirement data…</div>

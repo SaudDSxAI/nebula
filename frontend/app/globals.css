@@ -1,17 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #f0f9ff;
-  --color-primary-100: #e0f2fe;
-  --color-primary-200: #bae6fd;
-  --color-primary-300: #7dd3fc;
-  --color-primary-400: #38bdf8;
-  --color-primary-500: #0ea5e9;
-  --color-primary-600: #0274BD;
-  --color-primary-700: #0369a1;
-  --color-primary-800: #075985;
-  --color-primary-900: #0c4a6e;
-  --color-primary-950: #082f49;
+  --color-primary-50: #f4f7f4;
+  --color-primary-100: #e4ebe5;
+  --color-primary-200: #cbdbcd;
+  --color-primary-300: #a5c2a8;
+  --color-primary-400: #7aa17f;
+  --color-primary-500: #57845d;
+  --color-primary-600: #4a6b50;
+  --color-primary-700: #3a543f;
+  --color-primary-800: #2f4433;
+  --color-primary-900: #27382a;
+  --color-primary-950: #141f17;
+
+  --color-primary: #4A6B50;
+  --color-primary-hover: #3A5540;
+  --color-primary-alpha: rgba(74, 107, 80, 0.08);
 
   --font-sans: Inter, sans-serif;
 
@@ -66,7 +70,7 @@
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, #0274BD, #0ea5e9);
+    background: linear-gradient(135deg, #3A5540, #5D8564);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -82,8 +86,8 @@
 
     --color-text-primary: #1A241C;
     --color-text-secondary: #526655;
-    --color-text-tertiary: #768f7a;
-    --color-text-muted: #9ab09e;
+    --color-text-tertiary: #526655;
+    --color-text-muted: #526655;
     --color-text-inverse: #FFFFFF;
 
     --color-primary: #4A6B50;
@@ -107,8 +111,8 @@
     --color-hover: rgba(74, 107, 80, 0.04);
 
     --color-success-bg: #F9FFFC;
-    --color-success-text: #4ADE80;
-    --color-success-border: #4ADE80;
+    --color-success-text: #4A6B50;
+    --color-success-border: #4A6B50;
 
     --color-warning-bg: #FCF9EE;
     --color-warning-text: #E0A800;
@@ -135,7 +139,7 @@
 
     /* Backgrounds */
     --color-background: #0F0F0F;
-    --color-card: #1A1A1A;
+    --color-card: #1F1F1F;
     --color-sidebar: #141414;
 
     /* Surfaces — multiple levels for depth */
@@ -143,10 +147,10 @@
     --color-surface-3: #2a2a2a;
 
     /* Text */
-    --color-text-primary: #EFEFEF;
-    --color-text-secondary: #BBBBBB;
-    --color-text-tertiary: #888888;
-    --color-text-muted: #888888;
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #CCCCCC;
+    --color-text-tertiary: #CCCCCC;
+    --color-text-muted: #CCCCCC;
     --color-text-inverse: #0F0F0F;
 
     /* Primary brand */
@@ -174,17 +178,17 @@
     --color-hover: rgba(255, 255, 255, 0.04);
 
     /* Semantic — Success */
-    --color-success-bg: rgba(74, 222, 128, 0.08);
+    --color-success-bg: #1F1F1F;
     --color-success-text: #4ADE80;
     --color-success-border: rgba(74, 222, 128, 0.25);
 
     /* Semantic — Warning */
-    --color-warning-bg: rgba(224, 168, 0, 0.08);
+    --color-warning-bg: #1F1F1F;
     --color-warning-text: #E0A800;
     --color-warning-border: rgba(224, 168, 0, 0.25);
 
     /* Semantic — Info / Error */
-    --color-info-bg: rgba(214, 69, 69, 0.08);
+    --color-info-bg: #1F1F1F;
     --color-info-text: #D64545;
     --color-info-border: rgba(214, 69, 69, 0.25);
 

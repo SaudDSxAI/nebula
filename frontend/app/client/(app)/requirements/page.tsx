@@ -194,7 +194,7 @@ export default function RequirementsListPage() {
                             padding: '10px 20px', background: BLUE,
                             border: 'none', borderRadius: 10, color: '#fff', fontSize: 14, fontWeight: 700,
                             cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
-                            boxShadow: `0 4px 15px rgba(2,116,189,0.3)`, transition: 'all 0.15s',
+                            boxShadow: `0 4px 15px rgba(74,107,80,0.3)`, transition: 'all 0.15s',
                         }}>
                             <Plus size={16} /> Add Requirement
                         </button>
@@ -573,7 +573,7 @@ function RequirementCard({ req, isAdmin, canWrite, teamMembers, onStatusChange, 
                                 style={{
                                     display: 'flex', alignItems: 'center', gap: 5,
                                     padding: '5px 10px', borderRadius: 6, border: `1px solid ${BLUE}30`,
-                                    background: localAssigned ? `rgba(2,116,189,0.1)` : 'transparent',
+                                    background: localAssigned ? `rgba(74,107,80,0.1)` : 'transparent',
                                     color: localAssigned ? BLUE : COLORS.textMuted,
                                     fontSize: 11, fontWeight: 600, cursor: 'pointer',
                                 }}
@@ -602,7 +602,7 @@ function RequirementCard({ req, isAdmin, canWrite, teamMembers, onStatusChange, 
                                             textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
                                             fontSize: 12, color: COLORS.textPrimary, borderBottom: `1px solid ${COLORS.border}20`,
                                         }}>
-                                            <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(2,116,189,0.1)', color: BLUE, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700 }}>
+                                            <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(74,107,80,0.1)', color: BLUE, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700 }}>
                                                 {(m.name || m.email)?.[0]?.toUpperCase()}
                                             </div>
                                             <div>

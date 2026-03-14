@@ -8,8 +8,8 @@ import { Bot, ChevronDown, Send, FileText, ClipboardList, GraduationCap, Award, 
 
 const statusColors: Record<string, { bg: string; color: string }> = {
     applied: { bg: 'rgba(100,116,139,0.1)', color: '#64748b' },
-    screening: { bg: 'rgba(2,116,189,0.1)', color: '#0274BD' },
-    interviewing: { bg: 'rgba(245,114,81,0.1)', color: '#F57251' },
+    screening: { bg: 'rgba(74,107,80,0.1)', color: '#4A6B50' },
+    interviewing: { bg: 'rgba(224,168,0,0.1)', color: '#E0A800' },
     offered: { bg: 'rgba(202,138,4,0.1)', color: '#ca8a04' },
     accepted: { bg: 'rgba(21,128,61,0.1)', color: '#15803d' },
     rejected: { bg: 'rgba(220,38,38,0.1)', color: '#dc2626' },
@@ -271,7 +271,7 @@ export default function CandidateDetailPage() {
                     </div>
                 </div>
                 <div style={S.chip}>
-                    <div style={S.chipIcon('rgba(148,109,67,0.12)', 'var(--color-primary, #0274BD)')}><MapPin size={18} /></div>
+                    <div style={S.chipIcon('rgba(148,109,67,0.12)', 'var(--color-primary, #4A6B50)')}><MapPin size={18} /></div>
                     <div>
                         <div style={S.chipLabel}>Location</div>
                         <div style={S.chipValue}>{candidate.location || '—'}</div>
@@ -385,7 +385,7 @@ export default function CandidateDetailPage() {
 
                     {/* Internal Notes (like the messaging section) */}
                     <div style={{ ...S.infoCard, marginBottom: '24px' }}>
-                        <div style={{ padding: '14px 20px', background: 'linear-gradient(135deg, var(--color-primary, #0274BD), var(--color-primary-hover, #025d96))', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ padding: '14px 20px', background: 'linear-gradient(135deg, var(--color-primary, #4A6B50), var(--color-primary-hover, #3A5540))', display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <MessageSquare size={18} />
                             </div>
@@ -418,7 +418,7 @@ export default function CandidateDetailPage() {
                             <button
                                 onClick={handleAddNote as any}
                                 disabled={!newNote.trim() || addingNote}
-                                style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--color-primary, #0274BD)', color: '#fff', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', flexShrink: 0 }}
+                                style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--color-primary, #4A6B50)', color: '#fff', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', flexShrink: 0 }}
                             >
                                 <Send size={16} />
                             </button>

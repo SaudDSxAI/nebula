@@ -131,7 +131,7 @@ export default function CandidateAuthPage() {
             {/* Background Pattern */}
             <div style={{
                 position: 'fixed', inset: 0,
-                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(2, 116, 189, 0.05) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(245, 114, 81, 0.05) 0%, transparent 50%)`,
+                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(74, 107, 80, 0.05) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(224, 168, 0, 0.05) 0%, transparent 50%)`,
                 pointerEvents: 'none',
             }} />
 
@@ -159,7 +159,7 @@ export default function CandidateAuthPage() {
                         width: 60, height: 60, borderRadius: 16, background: COLORS.primary,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 26, margin: '0 auto 14px', color: '#fff', fontWeight: 800,
-                        boxShadow: '0 6px 24px rgba(2, 116, 189, 0.3)',
+                        boxShadow: '0 6px 24px rgba(74, 107, 80, 0.3)',
                     }}>
                         {client.company_name.charAt(0)}
                     </div>
@@ -257,7 +257,7 @@ export default function CandidateAuthPage() {
                             width: '100%', padding: '14px 24px', borderRadius: 14,
                             border: 'none', background: COLORS.primary, color: '#fff',
                             fontWeight: 700, fontSize: 15, cursor: loading ? 'wait' : 'pointer',
-                            marginTop: 8, boxShadow: '0 4px 20px rgba(2, 116, 189, 0.3)',
+                            marginTop: 8, boxShadow: '0 4px 20px rgba(74, 107, 80, 0.3)',
                             opacity: loading ? 0.7 : 1, transition: 'all 0.2s',
                             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                         }}
