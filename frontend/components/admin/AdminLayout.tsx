@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth/context';
 import ProtectedRoute from './ProtectedRoute';
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
 
 const navigation = [
   {
@@ -38,29 +37,41 @@ const navigation = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row font-sans">
-
-        {/* Mobile overlays */}
-        {mobileOpen && (
-          <div
-            className="fixed inset-0 bg-black/50 z-30 md:hidden"
-            onClick={() => setMobileOpen(false)}
-          />
-        )}
+      <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row font-sans pb-[70px] md:pb-0">
+        
+        {/* Mobile Bottom Navigation */}
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.06)] border-t border-gray-200 flex items-center overflow-x-auto no-scrollbar pb-[env(safe-area-inset-bottom)]">
+            <style dangerouslySetInnerHTML={{ __html: `
+                .no-scrollbar::-webkit-scrollbar { display: none; }
+                .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+            `}} />
+            <div className="flex w-full px-2 py-2 gap-1 items-center justify-between">
+                {navigation.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                        <Link
+                            key={item.name}
+                            href={item.href}
+                            className={`flex flex-col items-center justify-center p-2 min-w-[68px] rounded-xl transition-all duration-200 flex-shrink-0
+                                ${isActive ? 'bg-[var(--color-primary-alpha)] text-primary scale-105' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'}
+                            `}
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`mb-1 transition-transform duration-200 ${isActive ? 'scale-110 stroke-primary' : 'stroke-current'}`}>
+                                <path d={item.icon} />
+                            </svg>
+                            <span className="text-[10px] font-semibold tracking-wide whitespace-nowrap">{item.name}</span>
+                        </Link>
+                    );
+                })}
+            </div>
+        </nav>
 
         {/* Sidebar */}
         <aside className={`
-          fixed md:sticky top-0 h-screen z-40 shrink-0 bg-white border-r border-gray-200 flex flex-col w-64 transition-transform duration-300 ease-in-out
-          ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          hidden md:flex sticky top-0 h-screen z-40 shrink-0 bg-white border-r border-gray-200 flex-col w-64 transition-transform duration-300 ease-in-out
         `}>
           {/* Logo */}
           <div className="flex items-center h-16 px-5 border-b border-gray-200 gap-2.5 shrink-0">
@@ -124,23 +135,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* Top Header Bar */}
-          <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between md:justify-end px-4 sm:px-8 sticky top-0 z-20">
-            {/* Hamburger (Mobile only) */}
-            <button
-              className="p-1.5 -ml-1.5 rounded-lg hover:bg-gray-100 md:hidden text-gray-600"
-              onClick={() => setMobileOpen(true)}
-            >
-              <Menu size={20} />
-            </button>
+          <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-8 sticky top-0 z-20">
+            {/* Mobile Title (Replaces hamburger) */}
+            <div className="md:hidden flex items-center gap-2">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h2 className="text-[15px] font-bold text-gray-900 m-0 tracking-tight">
+                {navigation.find(n => pathname === n.href || pathname?.startsWith(n.href + '/'))?.name || 'Admin'}
+              </h2>
+            </div>
+
+            <div className="hidden md:block flex-1"></div>
 
             <button
               onClick={logout}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg cursor-pointer hover:bg-red-100 transition-colors"
+              title="Sign Out"
+              className="inline-flex items-center justify-center w-9 h-9 md:w-auto md:h-auto md:gap-1.5 md:px-4 md:py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg cursor-pointer hover:bg-red-100 transition-colors"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
               </svg>
-              Sign Out
+              <span className="hidden md:inline">Sign Out</span>
             </button>
           </header>
 

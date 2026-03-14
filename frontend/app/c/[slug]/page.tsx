@@ -316,21 +316,20 @@ function CVScreen({ client, onGoLogin, onAuthSuccess, onToast }: {
                 <p style={{ fontSize: 16, color: C.muted, textAlign: 'center', maxWidth: 480, margin: '0 0 40px', lineHeight: 1.6 }}>
                     {client.portal_tagline || 'Upload your CV and let our AI build your professional profile in seconds'}
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: 44 }}>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-0 mb-10 w-full">
                     {[
                         { num: client.portal_stat1_num || '500+', label: client.portal_stat1_label || 'PLACEMENTS' },
                         { num: client.portal_stat2_num || 'AI', label: client.portal_stat2_label || 'POWERED' },
                         { num: client.portal_stat3_num || '24/7', label: client.portal_stat3_label || 'ACCESS' },
                     ].map((s, i) => (
-                        <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
-                            <div style={{ textAlign: 'center', padding: '0 28px' }}>
+                        <div key={i} className="flex flex-col sm:flex-row items-center">
+                            <div className="text-center px-0 sm:px-7">
                                 <div style={{ fontSize: 22, fontWeight: 800, color: C.gold }}>{s.num}</div>
                                 <div style={{ fontSize: 10, color: C.muted, letterSpacing: '0.12em', marginTop: 2 }}>{s.label}</div>
                             </div>
-                            {i < 2 && <div style={{ width: 1, height: 36, background: C.border }} />}
+                            {i < 2 && <div className="hidden sm:block" style={{ width: 1, height: 36, background: C.border }} />}
                         </div>
                     ))}
-
                 </div>
                 <div style={{ width: '100%', maxWidth: 420, marginBottom: 14 }}>
                     <button onClick={() => setView('chat')}
@@ -372,18 +371,19 @@ function CVScreen({ client, onGoLogin, onAuthSuccess, onToast }: {
     /* ── CV CHAT ── */
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ padding: '14px 20px', borderBottom: `1px solid ${C.border}`, background: C.card, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div className="flex flex-wrap items-center gap-3 p-3.5 sm:px-5 border-b border-[rgba(255,255,255,0.09)] bg-[#1F1F1F]">
                 {client.logo_url
                     ? <div style={{ height: 32, overflow: 'hidden', borderRadius: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                         <img src={logoSrc(client.logo_url)!} alt="" style={logoStyle(client.logo_scale, client.logo_offset_x, client.logo_offset_y)} />
                     </div>
                     : <div style={{ width: 34, height: 34, borderRadius: 10, background: C.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 15, color: C.white }}>{client.company_name[0]}</div>
                 }
-                <div>
+                <div className="hidden sm:block">
                     <div style={{ fontWeight: 700, fontSize: 14 }}>{client.company_name}</div>
                     <div style={{ fontSize: 11, color: C.muted }}>AI Assistant & CV Evaluator</div>
                 </div>
-                <button onClick={() => setView('landing')} style={{ marginLeft: 'auto', background: 'none', border: 'none', color: C.muted, fontSize: 13, cursor: 'pointer' }}>Back</button>
+                <div className="flex-1 min-w-[20px]" />
+                <button onClick={() => setView('landing')} style={{ background: 'none', border: 'none', color: C.muted, fontSize: 13, cursor: 'pointer' }}>Back</button>
                 <button onClick={onGoLogin} style={{ padding: '7px 16px', borderRadius: 8, border: `1px solid ${C.border}`, background: 'transparent', color: C.muted, fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>Sign In</button>
             </div>
 
@@ -450,8 +450,8 @@ function CVScreen({ client, onGoLogin, onAuthSuccess, onToast }: {
             </div>
 
             {!showPasswordStep && !showFieldsForm && (
-                <div style={{ padding: '14px 20px', borderTop: `1px solid ${C.border}`, background: C.card }}>
-                    <div style={{ maxWidth: 680, margin: '0 auto', display: 'flex', gap: 10 }}>
+                <div className="p-3 sm:p-4 border-t border-[rgba(255,255,255,0.09)] bg-[#1F1F1F]">
+                    <div className="flex gap-2 sm:gap-2.5 max-w-2xl mx-auto">
                         <button onClick={() => fileRef.current?.click()} title="Upload CV"
                             style={{ width: 42, height: 42, borderRadius: 12, border: `1px solid ${C.border}`, background: C.input, color: C.accent, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 18 }}>
                             <Paperclip size={18} />
@@ -553,7 +553,7 @@ function PasswordStep({ client, profileSummary, onAuthSuccess, onToast }: {
                 </div>
             </div>
             {profileSummary && (
-                <div style={{ background: C.input, borderRadius: 10, padding: '12px 14px', marginBottom: 18, fontSize: 13, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 20px' }}>
+                <div className="bg-[#1F1F1F] rounded-[10px] p-3 sm:p-3.5 mb-4 text-[13px] grid grid-cols-1 sm:grid-cols-2 gap-y-1.5 gap-x-5">
                     {name && <span><span style={{ color: C.muted }}>Name: </span><strong>{name}</strong></span>}
                     {phone && <span><span style={{ color: C.muted }}>Phone: </span>{phone}</span>}
                     {get(profileSummary, 'role', 'Role/Position', 'current_title') && <span><span style={{ color: C.muted }}>Role: </span>{get(profileSummary, 'role', 'Role/Position', 'current_title')}</span>}
@@ -782,26 +782,27 @@ function Dashboard({ client, token, onLogout, onToast }: {
                 .stat-card:hover { border-color: rgba(74,107,80,0.4) !important; transform: translateY(-2px); }
             `}</style>
             {/* Header */}
-            <div style={{ borderBottom: `1px solid ${C.border}`, background: C.card, padding: '0 24px' }}>
-                <div style={{ maxWidth: 960, margin: '0 auto', display: 'flex', alignItems: 'center', height: 64, gap: 14 }}>
-                    {client.logo_url
-                        ? <div style={{ height: 32, overflow: 'hidden', borderRadius: 8, display: 'inline-flex', alignItems: 'center' }}>
-                            <img src={logoSrc(client.logo_url)!} alt="" style={logoStyle(client.logo_scale, client.logo_offset_x, client.logo_offset_y)} />
-                        </div>
-                        : <div style={{ width: 34, height: 34, borderRadius: 10, background: C.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: C.white, fontSize: 14 }}>{client.company_name[0]}</div>
-                    }
-                    <span style={{ fontWeight: 700, fontSize: 15 }}>{client.company_name}</span>
-                    <div style={{ flex: 1 }} />
+            <div className="px-4 py-3 sm:py-0 sm:px-6 border-b border-[rgba(255,255,255,0.09)] bg-[#1F1F1F]">
+                <div className="flex flex-wrap items-center justify-between gap-4 max-w-4xl mx-auto min-h-[64px]">
+                    <div className="flex items-center gap-3">
+                        {client.logo_url
+                            ? <div style={{ height: 32, overflow: 'hidden', borderRadius: 8, display: 'inline-flex', alignItems: 'center' }}>
+                                <img src={logoSrc(client.logo_url)!} alt="" style={logoStyle(client.logo_scale, client.logo_offset_x, client.logo_offset_y)} />
+                            </div>
+                            : <div style={{ width: 34, height: 34, borderRadius: 10, background: C.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: C.white, fontSize: 14 }}>{client.company_name[0]}</div>
+                        }
+                        <span style={{ fontWeight: 700, fontSize: 15 }}>{client.company_name}</span>
+                    </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div style={{ width: 34, height: 34, borderRadius: '50%', background: C.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: C.white, fontSize: 13 }}>{initials}</div>
-                        <span style={{ fontSize: 13, color: C.muted }}>{profile?.name || profile?.email || ''}</span>
+                        <span className="hidden sm:inline" style={{ fontSize: 13, color: C.muted }}>{profile?.name || profile?.email || ''}</span>
                         <button onClick={onLogout} style={{ padding: '7px 16px', borderRadius: 8, border: `1px solid ${C.border}`, background: 'transparent', color: C.muted, fontSize: 13, cursor: 'pointer', transition: 'all 0.2s' }}>Logout</button>
                     </div>
                 </div>
             </div>
 
             {/* Profile Hero */}
-            <div style={{ background: `linear-gradient(135deg, rgba(74,107,80,0.12) 0%, rgba(74,107,80,0.02) 100%)`, borderBottom: `1px solid ${C.border}`, padding: '28px 24px' }}>
+            <div className="px-5 py-6 sm:px-6 sm:py-7 border-b border-[rgba(255,255,255,0.09)]" style={{ background: `linear-gradient(135deg, rgba(74,107,80,0.12) 0%, rgba(74,107,80,0.02) 100%)` }}>
                 <div style={{ maxWidth: 960, margin: '0 auto', display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     {/* Avatar + Info */}
                     <div style={{ display: 'flex', gap: 18, alignItems: 'center', flex: 1, minWidth: 280 }}>
@@ -847,10 +848,10 @@ function Dashboard({ client, token, onLogout, onToast }: {
             </div>
 
             {/* Tab Navigation */}
-            <div style={{ borderBottom: `1px solid ${C.border}`, background: C.card }}>
-                <div style={{ maxWidth: 960, margin: '0 auto', display: 'flex', gap: 0, padding: '0 24px' }}>
+            <div className="overflow-x-auto hide-scrollbar border-b border-[rgba(255,255,255,0.09)] bg-[#1F1F1F]">
+                <div className="flex gap-0 px-4 sm:px-6 max-w-4xl mx-auto w-max sm:w-auto">
                     {tabs.map(t => (
-                        <button key={t.id} onClick={() => setTab(t.id)} className="dash-tab"
+                        <button key={t.id} onClick={() => setTab(t.id)} className="dash-tab shrink-0"
                             style={{ padding: '15px 22px', background: 'transparent', border: 'none', borderBottom: `2px solid ${tab === t.id ? C.accent : 'transparent'}`, color: tab === t.id ? C.text : C.muted, fontWeight: tab === t.id ? 700 : 500, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, transition: 'all 0.2s', borderRadius: '4px 4px 0 0' }}>
                             {t.icon} {t.label}
                         </button>
@@ -859,7 +860,7 @@ function Dashboard({ client, token, onLogout, onToast }: {
             </div>
 
             {/* Tab Content */}
-            <div style={{ maxWidth: 960, margin: '0 auto', padding: '28px 24px', animation: 'fadeIn 0.3s ease' }}>
+            <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-7" style={{ animation: 'fadeIn 0.3s ease' }}>
                 {tab === 'profile' && <ProfileTab profile={profile} authFetch={authFetch} onToast={onToast} onRefresh={loadProfile} />}
                 {tab === 'documents' && <DocumentsTab authFetch={authFetch} onToast={onToast} token={token} />}
                 {tab === 'messages' && <MessagesTab authFetch={authFetch} onToast={onToast} />}
@@ -871,12 +872,12 @@ function Dashboard({ client, token, onLogout, onToast }: {
 
 function ProfileSectionCard({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
     return (
-        <div style={{ background: C.card, borderRadius: 16, border: `1px solid ${C.border}`, padding: '22px 24px', transition: 'border-color 0.2s' }}>
+        <div className="bg-[#1F1F1F] rounded-2xl border border-[rgba(255,255,255,0.09)] p-5 sm:p-6 transition-colors duration-200 hover:border-[rgba(255,255,255,0.15)]">
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, paddingBottom: 12, borderBottom: `1px solid ${C.border}` }}>
                 <div style={{ color: C.accent }}>{icon}</div>
                 <h3 style={{ fontSize: 14, fontWeight: 700, color: C.text, margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{title}</h3>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '0 24px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0">
                 {children}
             </div>
         </div>
@@ -938,15 +939,15 @@ function ProfileTab({ profile, authFetch, onToast, onRefresh }: { profile: Profi
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {/* Action bar */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div style={{ fontSize: 13, color: C.muted }}>
                     {editing ? <><Edit3 size={13} style={{ display: 'inline', marginRight: 4 }} /> Edit mode — update your details below</> : 'View and manage your profile information'}
                 </div>
-                <div style={{ display: 'flex', gap: 10 }}>
+                <div className="flex items-center gap-2.5 w-full sm:w-auto">
                     {editing ? <>
-                        <button onClick={() => { setForm({ ...profile }); setEditing(false); }} style={{ padding: '9px 20px', borderRadius: 10, border: `1px solid ${C.border}`, background: 'transparent', color: C.muted, cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.2s' }}><X size={14} /> Cancel</button>
-                        <button onClick={save} disabled={saving} style={{ padding: '9px 22px', borderRadius: 10, border: 'none', background: C.accent, color: C.white, cursor: 'pointer', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, opacity: saving ? 0.6 : 1, transition: 'all 0.2s' }}><Save size={14} /> {saving ? 'Saving...' : 'Save Changes'}</button>
-                    </> : <button onClick={() => setEditing(true)} style={{ padding: '9px 22px', borderRadius: 10, border: `1px solid ${C.border}`, background: 'rgba(74,107,80,0.08)', color: C.text, cursor: 'pointer', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.2s' }}><Edit3 size={14} /> Edit Profile</button>}
+                        <button onClick={() => { setForm({ ...profile }); setEditing(false); }} className="flex-1 sm:flex-none justify-center" style={{ padding: '9px 20px', borderRadius: 10, border: `1px solid ${C.border}`, background: 'transparent', color: C.muted, cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.2s' }}><X size={14} /> Cancel</button>
+                        <button onClick={save} disabled={saving} className="flex-1 sm:flex-none justify-center" style={{ padding: '9px 22px', borderRadius: 10, border: 'none', background: C.accent, color: C.white, cursor: 'pointer', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, opacity: saving ? 0.6 : 1, transition: 'all 0.2s' }}><Save size={14} /> {saving ? 'Saving...' : 'Save Changes'}</button>
+                    </> : <button onClick={() => setEditing(true)} className="flex-1 sm:flex-none justify-center" style={{ padding: '9px 22px', borderRadius: 10, border: `1px solid ${C.border}`, background: 'rgba(74,107,80,0.08)', color: C.text, cursor: 'pointer', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.2s' }}><Edit3 size={14} /> Edit Profile</button>}
                 </div>
             </div>
 
@@ -1040,11 +1041,10 @@ function DocumentsTab({ authFetch, onToast, token }: { authFetch: any; onToast: 
                 onDragLeave={() => setDragOver(false)}
                 onDrop={handleDrop}
                 onClick={() => cvRef.current?.click()}
+                className="p-6 sm:p-10 text-center rounded-2xl cursor-pointer transition-all duration-300 ease-in-out"
                 style={{
                     background: dragOver ? 'rgba(74,107,80,0.12)' : C.card,
                     border: `2px dashed ${dragOver ? C.accent : C.border}`,
-                    borderRadius: 16, padding: '40px 24px', textAlign: 'center', cursor: 'pointer',
-                    transition: 'all 0.3s ease',
                 }}
             >
                 <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(74,107,80,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
@@ -1136,7 +1136,7 @@ function MessagesTab({ authFetch, onToast }: { authFetch: any; onToast: (m: stri
             <div style={{ padding: '16px 22px', borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', gap: 10 }}>
                 <MessageSquare size={17} color={C.accent} />
                 <span style={{ fontWeight: 700, fontSize: 14 }}>Messages</span>
-                <span style={{ fontSize: 12, color: C.muted }}>• Chat with the recruitment team</span>
+                <span className="hidden sm:inline" style={{ fontSize: 12, color: C.muted }}>• Chat with the recruitment team</span>
             </div>
             <div style={{ flex: 1, overflow: 'auto', padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {messages.length === 0 && (
@@ -1210,7 +1210,7 @@ function SettingsTab({ authFetch, onToast }: { authFetch: any; onToast: (m: stri
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 500 }}>
-            <div style={{ background: C.card, borderRadius: 16, border: `1px solid ${C.border}`, padding: '24px 26px' }}>
+            <div className="rounded-2xl border border-[rgba(255,255,255,0.09)] bg-[#1F1F1F] p-4 sm:p-6 text-[13px]">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, paddingBottom: 14, borderBottom: `1px solid ${C.border}` }}>
                     <Shield size={17} color={C.accent} />
                     <h3 style={{ fontSize: 14, fontWeight: 700, margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Change Password</h3>

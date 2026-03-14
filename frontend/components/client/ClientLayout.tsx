@@ -32,7 +32,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     const [client, setClient] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [collapsed, setCollapsed] = useState(false);
-    const [mobileOpen, setMobileOpen] = useState(false);
     const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
     useEffect(() => {
@@ -41,11 +40,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             .catch(() => router.push('/login'))
             .finally(() => setLoading(false));
     }, [router]);
-
-    // Close mobile menu on route change
-    useEffect(() => {
-        setMobileOpen(false);
-    }, [pathname]);
 
     const handleLogout = async () => {
         await clientLogout();
@@ -61,36 +55,52 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     const sidebarWidthClass = collapsed ? 'w-[68px]' : 'w-64';
 
     return (
-        <div className="flex flex-col md:flex-row min-h-screen bg-[var(--color-background)]">
+        <div className="flex flex-col md:flex-row min-h-screen bg-[var(--color-background)] pb-16 md:pb-0">
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&family=Nunito:wght@400;500;600;700;800&display=swap');
                 .font-heading { font-family: 'Varela Round', sans-serif; }
+                .no-scrollbar::-webkit-scrollbar { display: none; }
+                .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
             `}} />
 
-            {/* Mobile overlays */}
-            {mobileOpen && (
-                <div
-                    className="fixed inset-0 bg-black/50 z-30 md:hidden"
-                    onClick={() => setMobileOpen(false)}
-                />
-            )}
+            {/* ── Bottom Mobile Navigation ───────────────────────────── */}
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#4A6B50] dark:bg-[#141414] text-white flex items-center overflow-x-auto no-scrollbar pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_rgba(0,0,0,0.15)] border-t border-white/10">
+                <div className="flex w-full px-2 py-2 gap-1 items-center">
+                    {baseNavigation
+                        .filter(item => item.roles.includes(client?.role || 'admin'))
+                        .map(item => {
+                            const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
+                            return (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className={`flex flex-col items-center justify-center p-2 min-w-[68px] rounded-xl transition-all duration-200 flex-shrink-0
+                                        ${isActive ? 'bg-white/15 text-white scale-105' : 'text-white/60 hover:bg-white/10 hover:text-white/90'}
+                                    `}
+                                >
+                                    <span className={`mb-1 transition-transform duration-200 ${isActive ? 'scale-110' : ''}`}>{item.icon}</span>
+                                    <span className="text-[10px] font-semibold tracking-wide whitespace-nowrap">{item.name}</span>
+                                </Link>
+                            );
+                        })}
+                </div>
+            </nav>
 
             {/* ── Sidebar ────────────────────────────────────────────── */}
             <aside
                 className={`
-                    fixed md:sticky top-0 h-screen z-40 shrink-0 bg-[#4A6B50] dark:bg-[#141414] text-white flex flex-col shadow-xl transition-all duration-300 ease-in-out
-                    ${mobileOpen ? 'left-0 w-64 translate-x-0' : '-translate-x-full md:translate-x-0'}
+                    hidden md:flex sticky top-0 h-screen z-40 shrink-0 bg-[#4A6B50] dark:bg-[#141414] text-white flex-col shadow-xl transition-all duration-300 ease-in-out
                     ${sidebarWidthClass}
                 `}
             >
                 {/* ── Logo ─────────────────────────────────────────── */}
-                <div className={`p-4 md:p-[18px] border-b border-white/10 flex items-center min-h-[68px] overflow-hidden ${collapsed && !mobileOpen ? 'md:justify-center' : ''}`}>
+                <div className={`p-4 md:p-[18px] border-b border-white/10 flex items-center min-h-[68px] overflow-hidden ${collapsed ? 'md:justify-center' : ''}`}>
                     <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-primary shrink-0 shadow-sm">
                             <Zap size={18} className="fill-current text-[#4A6B50] dark:text-[#5D8564]" />
                         </div>
-                        <div className={`overflow-hidden transition-all duration-300 ${collapsed && !mobileOpen ? 'md:max-w-0 md:opacity-0' : 'max-w-[180px] opacity-100 whitespace-nowrap'}`}>
+                        <div className={`overflow-hidden transition-all duration-300 ${collapsed ? 'md:max-w-0 md:opacity-0' : 'max-w-[180px] opacity-100 whitespace-nowrap'}`}>
                             <div className="text-sm font-extrabold text-white font-heading">Nebula</div>
                             <div className="text-[10px] font-semibold text-white/55 uppercase tracking-wider">
                                 {client?.plan || 'free'} · {client?.role || 'admin'}
@@ -116,25 +126,25 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                                         href={item.href}
                                         className={`flex items-center rounded-xl no-underline text-[13px] font-semibold transition-colors duration-150 py-2.5 px-3.5 
                                             ${isActive ? 'text-white bg-white/15 font-bold' : 'text-white/80 hover:bg-white/10'}
-                                            ${collapsed && !mobileOpen ? 'md:justify-center px-0 py-3' : 'gap-3 w-full'}
+                                            ${collapsed ? 'md:justify-center px-0 py-3' : 'gap-3 w-full'}
                                         `}
                                     >
                                         <span className="flex items-center shrink-0">{item.icon}</span>
-                                        <span className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${collapsed && !mobileOpen ? 'md:max-w-0 md:opacity-0' : 'max-w-[160px] opacity-100'}`}>
+                                        <span className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${collapsed ? 'md:max-w-0 md:opacity-0' : 'max-w-[160px] opacity-100'}`}>
                                             {item.name}
                                         </span>
                                     </Link>
                                     {/* Tooltip when collapsed */}
-                                    {collapsed && !mobileOpen && hoveredNav === item.name && <NavTooltip label={item.name} />}
+                                    {collapsed && hoveredNav === item.name && <NavTooltip label={item.name} />}
                                 </div>
                             );
                         })}
                 </nav>
 
                 {/* ── Bottom: user + logout + collapse ──────────────── */}
-                <div className={`p-3.5 border-t border-white/10 flex flex-col gap-1.5 ${collapsed && !mobileOpen ? 'md:items-center' : ''}`}>
+                <div className={`p-3.5 border-t border-white/10 flex flex-col gap-1.5 ${collapsed ? 'md:items-center' : ''}`}>
                     {/* Email */}
-                    <div className={`text-[11px] text-white/50 overflow-hidden whitespace-nowrap text-ellipsis transition-all duration-300 ${collapsed && !mobileOpen ? 'md:max-w-0 md:h-0 md:opacity-0' : 'max-w-[220px] h-4 opacity-100'}`}>
+                    <div className={`text-[11px] text-white/50 overflow-hidden whitespace-nowrap text-ellipsis transition-all duration-300 ${collapsed ? 'md:max-w-0 md:h-0 md:opacity-0' : 'max-w-[220px] h-4 opacity-100'}`}>
                         {client?.email}
                     </div>
 
@@ -143,11 +153,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                         onClick={handleLogout}
                         title="Sign Out"
                         className={`bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white text-xs font-semibold cursor-pointer flex items-center justify-center transition-all duration-200 h-9 p-0
-                            ${collapsed && !mobileOpen ? 'md:w-11' : 'w-full gap-2'}
+                            ${collapsed ? 'md:w-11' : 'w-full gap-2'}
                         `}
                     >
                         <LogOut size={14} />
-                        <span className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${collapsed && !mobileOpen ? 'md:max-w-0 md:opacity-0' : 'max-w-[120px] opacity-100'}`}>
+                        <span className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${collapsed ? 'md:max-w-0 md:opacity-0' : 'max-w-[120px] opacity-100'}`}>
                             Sign Out
                         </span>
                     </button>
@@ -173,21 +183,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 {/* Top bar */}
                 <div className="h-14 bg-[var(--color-topbar-bg)] backdrop-blur-md border-b border-[var(--color-topbar-border,var(--color-border))] flex items-center justify-between px-4 sm:px-6 md:px-8 z-10 sticky top-0 shadow-sm transition-all duration-200">
                     <div className="flex items-center gap-3">
-                        {/* Hamburger (Mobile only) */}
-                        <button
-                            className="p-1.5 -ml-1.5 rounded-lg hover:bg-[var(--color-hover)] md:hidden text-[var(--color-text-secondary)]"
-                            onClick={() => setMobileOpen(true)}
-                        >
-                            <Menu size={20} />
-                        </button>
-
-                        <h2 className="text-sm font-bold text-[var(--color-text-secondary)] m-0 tracking-tight font-heading truncate max-w-[150px] sm:max-w-none">
+                        {/* Mobile Logo replacing hamburger */}
+                        <div className="md:hidden w-7 h-7 rounded-lg bg-[#4A6B50] dark:bg-[#5D8564] flex items-center justify-center text-white shrink-0 shadow-sm mr-1">
+                            <Zap size={14} className="fill-current text-white" />
+                        </div>
+                        <h2 className="text-[15px] font-extrabold text-[#4A6B50] dark:text-[#5D8564] m-0 tracking-tight font-heading truncate max-w-[200px] sm:max-w-none">
                             {baseNavigation.find(n => pathname === n.href || pathname?.startsWith(n.href + '/'))?.name || 'Client Portal'}
                         </h2>
                     </div>
 
                     <div className="flex items-center gap-3">
                         <ThemeToggle />
+                        <button onClick={handleLogout} className="md:hidden flex items-center justify-center text-[var(--color-text-secondary)] w-8 h-8 rounded-lg hover:bg-[var(--color-hover)] hover:text-red-500 transition-colors" title="Sign Out" aria-label="Sign Out">
+                            <LogOut size={16} />
+                        </button>
                         <span className="hidden sm:inline-block text-[10px] font-bold bg-[var(--color-success-bg)] text-[var(--color-success-text)] border border-[var(--color-success-border)] py-1 px-2.5 rounded-full uppercase truncate max-w-[100px]">
                             {client?.plan || 'beta'}
                         </span>

@@ -179,7 +179,7 @@ export default function RequirementsListPage() {
     return (
         <>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
                     <h1 style={{ fontSize: 26, fontWeight: 800, color: COLORS.textPrimary, margin: 0, letterSpacing: '-0.02em' }}>
                         Requirements
@@ -203,7 +203,7 @@ export default function RequirementsListPage() {
             </div>
 
             {/* ── 5 Stat Cards (matches old app) ── */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 14, marginBottom: 24 }}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-6">
                 <StatCard label="Total" value={stats?.total ?? 0} icon={<ClipboardList size={18} />} />
                 <StatCard label="Open" value={stats?.open ?? 0} icon={<FileText size={18} />} color={COLORS.success.text} />
                 <StatCard label="In Progress" value={stats?.in_progress ?? 0} icon={<Clock size={18} />} color={COLORS.info.text} />
@@ -281,8 +281,8 @@ export default function RequirementsListPage() {
                     <Search size={16} color={COLORS.textMuted} />
                     <span style={{ fontSize: 14, fontWeight: 700, color: COLORS.textPrimary }}>Filter Requirements</span>
                 </div>
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-                    <form onSubmit={handleSearch} style={{ flex: 1, minWidth: 200 }}>
+                <div className="flex flex-col sm:flex-row gap-3 flex-wrap sm:items-center">
+                    <form onSubmit={handleSearch} className="flex-1 min-w-[200px] w-full sm:w-auto">
                         <input
                             type="text" placeholder="Search by title, company..."
                             value={search} onChange={(e) => setSearch(e.target.value)}
@@ -343,7 +343,7 @@ export default function RequirementsListPage() {
                     <div style={{ fontSize: 13, color: COLORS.textSecondary }}>Use the AI creator above to add your first requirement</div>
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 16 }}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {requirements.map((req) => (
                         <RequirementCard
                             key={req.id}
@@ -374,8 +374,8 @@ export default function RequirementsListPage() {
                         <p style={{ fontSize: 14, color: COLORS.textSecondary, lineHeight: 1.5, marginBottom: 24 }}>
                             &quot;{deleteTarget.title}&quot; will be permanently removed along with all candidate assignments.
                         </p>
-                        <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
-                            <button onClick={() => setDeleteTarget(null)} style={{
+                        <div className="flex flex-col sm:flex-row gap-3 justify-end">
+                            <button onClick={() => setDeleteTarget(null)} className="order-2 sm:order-1" style={{
                                 padding: '10px 16px', background: 'transparent', border: `1px solid ${COLORS.border}`,
                                 borderRadius: 8, color: COLORS.textSecondary, fontSize: 14, fontWeight: 600, cursor: 'pointer',
                             }}>Cancel</button>

@@ -75,7 +75,7 @@ const lbl: React.CSSProperties = {
 };
 const card: React.CSSProperties = {
     background: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 14,
-    padding: 28, marginBottom: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+    padding: 'clamp(16px, 5vw, 28px)', marginBottom: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
 };
 const ta: React.CSSProperties = {
     width: '100%', padding: '12px 14px', border: '1px solid var(--color-border)', borderRadius: 10,
@@ -484,7 +484,7 @@ export default function SettingsPage() {
 
             {/* ── Profile Banner ───────────────────────────────────────── */}
             {profile && (
-                <div style={{ ...card, display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, background: 'linear-gradient(135deg, rgba(74,107,80,0.06), rgba(74,107,80,0.02))', borderColor: 'rgba(74,107,80,0.15)' }}>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center" style={{ ...card, gap: 16, marginBottom: 24, background: 'linear-gradient(135deg, rgba(74,107,80,0.06), rgba(74,107,80,0.02))', borderColor: 'rgba(74,107,80,0.15)' }}>
                     <div style={{ width: 56, height: 56, borderRadius: 14, background: `rgba(74,107,80,0.1)`, color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, fontWeight: 800, flexShrink: 0 }}>
                         {profile.company_name?.charAt(0).toUpperCase() || '?'}
                     </div>
@@ -505,9 +505,9 @@ export default function SettingsPage() {
             )}
 
             {/* ── Tab Bar ──────────────────────────────────────────────── */}
-            <div style={{ display: 'flex', gap: 4, background: 'var(--color-background)', padding: 6, borderRadius: 12, marginBottom: 24, width: 'fit-content', border: '1px solid var(--color-border)' }}>
+            <div className="flex gap-1 bg-[var(--color-background)] p-1.5 rounded-xl mb-6 border border-[var(--color-border)] overflow-x-auto w-full hide-scrollbar snap-x">
                 {TABS.map(t => (
-                    <button key={t.id} onClick={() => setTab(t.id)} style={{
+                    <button key={t.id} onClick={() => setTab(t.id)} className="shrink-0 snap-start" style={{
                         padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer',
                         background: tab === t.id ? 'var(--color-card)' : 'transparent',
                         color: tab === t.id ? 'var(--color-primary)' : 'var(--color-text-secondary)',
@@ -530,7 +530,7 @@ export default function SettingsPage() {
                     <div style={{ ...card, marginBottom: 16 }}>
                         {sectionTitle(<ImageIcon size={18} />, 'Company Logo', 'Upload, reposition and zoom your logo')}
 
-                        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' as const, alignItems: 'flex-start' }}>
+                        <div className="flex flex-col sm:flex-row items-start" style={{ gap: 24 }}>
                             {/* ── Drag canvas ── */}
                             <div>
                                 <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 8 }}>
@@ -621,8 +621,8 @@ export default function SettingsPage() {
 
                     <div style={card}>
                         {sectionTitle(<Building2 size={18} />, 'Company Profile', 'Update your company information')}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                            <div style={{ gridColumn: '1 / -1' }}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="md:col-span-2">
                                 <label style={lbl}>Company Name</label>
                                 <input value={aForm.company_name} onChange={e => setAForm(p => ({ ...p, company_name: e.target.value }))} style={inp} placeholder="Acme Corp" />
                             </div>
@@ -705,10 +705,10 @@ export default function SettingsPage() {
                                         { numKey: 'portal_stat2_num' as const, labelKey: 'portal_stat2_label' as const, placeholder: ['AI', 'POWERED'] },
                                         { numKey: 'portal_stat3_num' as const, labelKey: 'portal_stat3_label' as const, placeholder: ['24/7', 'ACCESS'] },
                                     ].map((stat, i) => (
-                                        <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                                            <span style={{ fontSize: 12, color: 'var(--color-text-muted)', minWidth: 16, textAlign: 'center' }}>{i + 1}</span>
-                                            <input value={(pForm as any)[stat.numKey]} onChange={e => setPForm(p => ({ ...p, [stat.numKey]: e.target.value }))} style={{ ...inp, width: 90, flex: 'none' }} placeholder={stat.placeholder[0]} maxLength={20} />
-                                            <input value={(pForm as any)[stat.labelKey]} onChange={e => setPForm(p => ({ ...p, [stat.labelKey]: e.target.value }))} style={{ ...inp, flex: 1 }} placeholder={stat.placeholder[1]} maxLength={40} />
+                                        <div key={i} className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                                            <span className="hidden sm:inline" style={{ fontSize: 12, color: 'var(--color-text-muted)', minWidth: 16, textAlign: 'center' }}>{i + 1}</span>
+                                            <input value={(pForm as any)[stat.numKey]} onChange={e => setPForm(p => ({ ...p, [stat.numKey]: e.target.value }))} style={{ ...inp }} className="w-full sm:w-24 shrink-0" placeholder={stat.placeholder[0]} maxLength={20} />
+                                            <input value={(pForm as any)[stat.labelKey]} onChange={e => setPForm(p => ({ ...p, [stat.labelKey]: e.target.value }))} style={{ ...inp }} className="flex-1" placeholder={stat.placeholder[1]} maxLength={40} />
                                         </div>
                                     ))}
                                 </div>
@@ -764,7 +764,7 @@ export default function SettingsPage() {
                                     <label style={lbl}>Current Password</label>
                                     <input type="password" value={pwForm.current_password} onChange={e => setPwForm(p => ({ ...p, current_password: e.target.value }))} style={inp} placeholder="Enter current password" required />
                                 </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                                     <div>
                                         <label style={lbl}>New Password</label>
                                         <input type="password" value={pwForm.new_password} onChange={e => setPwForm(p => ({ ...p, new_password: e.target.value }))} style={inp} placeholder="Min 6 characters" required />
@@ -788,11 +788,11 @@ export default function SettingsPage() {
                         <div style={card}>
                             {sectionTitle(<KeyRound size={18} />, 'API Key', 'Use this key to access the API programmatically')}
                             <div style={{ background: 'var(--color-background)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '12px 14px', marginBottom: 14 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                                     <code style={{ flex: 1, fontSize: 13, color: 'var(--color-text-primary)', fontFamily: 'monospace', wordBreak: 'break-all', opacity: apiVisible ? 1 : 0.3 }}>
                                         {apiVisible ? (apiKey || 'No API key generated yet') : '•'.repeat(Math.min(apiKey.length || 40, 40))}
                                     </code>
-                                    <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                                    <div className="flex gap-1.5 self-end sm:self-auto shrink-0">
                                         <button type="button" onClick={() => setApiVisible(v => !v)} style={{ ...btnSecondary, padding: '6px 12px', fontSize: 12, display: 'flex', alignItems: 'center', gap: 5 }}>
                                             {apiVisible ? <><EyeOff size={13} /> Hide</> : <><Eye size={13} /> Show</>}
                                         </button>
@@ -816,7 +816,7 @@ export default function SettingsPage() {
                     {/* Account Info */}
                     <div style={card}>
                         {sectionTitle(<Info size={18} />, 'Account Information', 'Read-only account details')}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, border: '1px solid var(--color-border)', borderRadius: 10, overflow: 'hidden' }}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 rounded-lg overflow-hidden border border-[var(--color-border)]">
                             {[
                                 ['Email', profile?.email || '—'],
                                 ['Plan', (profile?.plan || 'free').toUpperCase()],
@@ -846,7 +846,7 @@ export default function SettingsPage() {
                                 { key: 'email_notifications' as keyof typeof nForm, label: 'Email Notifications', desc: 'Receive emails for new candidates, status changes, and team activity' },
                                 { key: 'weekly_digest' as keyof typeof nForm, label: 'Weekly Digest', desc: 'Get a weekly summary of requirements, candidates, and team workload every Monday' },
                             ].map(row => (
-                                <div key={row.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: 'var(--color-background)', border: '1px solid var(--color-border)', borderRadius: 10 }}>
+                                <div key={row.key} className="flex justify-between items-start sm:items-center gap-4" style={{ padding: '14px 16px', background: 'var(--color-background)', border: '1px solid var(--color-border)', borderRadius: 10 }}>
                                     <div>
                                         <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--color-text-primary)' }}>{row.label}</div>
                                         <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 2 }}>{row.desc}</div>
@@ -890,14 +890,16 @@ export default function SettingsPage() {
                 <div>
                     {/* Portal URL bar */}
                     {kbSubdomain && (
-                        <div style={{ ...card, padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <Globe size={15} color="var(--color-primary)" style={{ flexShrink: 0 }} />
-                            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', flexShrink: 0 }}>Portal URL</span>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3" style={{ ...card, padding: '14px 20px' }}>
+                            <div className="flex items-center gap-2">
+                                <Globe size={15} color="var(--color-primary)" style={{ flexShrink: 0 }} />
+                                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', flexShrink: 0 }}>Portal URL</span>
+                            </div>
                             <span style={{ fontSize: 13, fontFamily: 'monospace', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'var(--color-text-primary)' }}>
                                 {typeof window !== 'undefined' ? window.location.origin : ''}/c/{kbSubdomain}
                             </span>
                             <button onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/c/${kbSubdomain}`); toast('Portal link copied'); }}
-                                style={{ padding: '5px 12px', borderRadius: 7, border: '1px solid var(--color-border)', background: 'var(--color-background)', color: 'var(--color-text-muted)', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>
+                                className="self-end sm:self-auto shrink-0" style={{ padding: '5px 12px', borderRadius: 7, border: '1px solid var(--color-border)', background: 'var(--color-background)', color: 'var(--color-text-muted)', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>
                                 Copy
                             </button>
                         </div>
@@ -915,7 +917,7 @@ export default function SettingsPage() {
                         </div>
                         <textarea value={kbText} onChange={e => setKbText(e.target.value)} rows={14} style={ta}
                             placeholder={"Paste your company information here...\n\nInclude: services, team, culture, FAQs, policies, benefits, contact info."} />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                        <div className="flex flex-wrap justify-between items-center gap-3" style={{ marginTop: 12 }}>
                             <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                                 {kbText.length > 0 ? `${kbText.length.toLocaleString()} characters` : 'No content yet'}
                             </span>
@@ -936,7 +938,7 @@ export default function SettingsPage() {
                         )}
                         <textarea value={kbPrompt} onChange={e => setKbPrompt(e.target.value)} rows={10} style={ta}
                             placeholder={"You are a helpful AI assistant for {company_name}.\n\nHelp candidates learn about the company, open roles, and the application process.\nBe professional, friendly, and concise. If you don't know something, say so honestly."} />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                        <div className="flex flex-wrap justify-between items-center gap-3" style={{ marginTop: 12 }}>
                             <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                                 {kbPrompt.length > 0 ? `${kbPrompt.length.toLocaleString()} characters` : 'Using default prompt'}
                             </span>
@@ -952,8 +954,8 @@ export default function SettingsPage() {
             {tab === 'cv_eval' && (
                 <div>
                     {/* Header */}
-                    <div style={{ ...card, padding: '18px 24px', marginBottom: 16 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                    <div style={{ ...card, padding: 'clamp(14px, 4vw, 24px)', marginBottom: 16 }}>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                                 <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(74,107,80,0.12)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                     <FileCode size={18} />

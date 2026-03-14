@@ -144,29 +144,30 @@ export default function AuditPage() {
                         </button>
                     )}
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                <div className="flex flex-col sm:flex-row flex-wrap gap-3">
                     {/* Email search */}
-                    <form onSubmit={handleSearch} style={{ display: 'flex', gap: 6 }}>
-                        <div style={{ position: 'relative' }}>
-                            <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                    <form onSubmit={handleSearch} className="flex gap-2 w-full sm:w-auto">
+                        <div className="relative flex-1 sm:flex-none">
+                            <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
                             <input
                                 value={search}
                                 onChange={e => setSearch(e.target.value)}
                                 placeholder="Search by email..."
-                                style={{ ...inp, paddingLeft: 30, width: 200 }}
+                                className="w-full sm:w-[200px]"
+                                style={{ ...inp, paddingLeft: 30 }}
                             />
                         </div>
                         <button type="submit" style={{ padding: '8px 14px', background: PRIMARY, border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Go</button>
                     </form>
 
                     {/* Action filter */}
-                    <select value={filterAction} onChange={e => setFilterAction(e.target.value)} style={{ ...inp, cursor: 'pointer' }}>
+                    <select value={filterAction} onChange={e => setFilterAction(e.target.value)} className="w-full sm:w-auto" style={{ ...inp, cursor: 'pointer' }}>
                         <option value="">All Actions</option>
                         {actionTypes.map(a => <option key={a} value={a}>{a.replace(/_/g, ' ')}</option>)}
                     </select>
 
                     {/* Entity filter */}
-                    <select value={filterEntity} onChange={e => setFilterEntity(e.target.value)} style={{ ...inp, cursor: 'pointer' }}>
+                    <select value={filterEntity} onChange={e => setFilterEntity(e.target.value)} className="w-full sm:w-auto" style={{ ...inp, cursor: 'pointer' }}>
                         <option value="">All Entities</option>
                         {entityTypes.map(e => <option key={e} value={e}>{e}</option>)}
                     </select>
@@ -181,9 +182,9 @@ export default function AuditPage() {
             </div>
 
             {/* ─── Table ───────────────────────────────────────────────────── */}
-            <div style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 14, overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+            <div className="shadow-sm rounded-[14px]" style={{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
                 {/* Table Header */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr 1fr 0.8fr 2.5fr', padding: '10px 18px', background: 'var(--color-background)', borderBottom: '1px solid var(--color-border)' }}>
+                <div className="hidden md:grid grid-cols-[1fr_1.4fr_1fr_0.8fr_2.5fr] px-[18px] py-2.5 bg-[var(--color-background)] border-b border-[var(--color-border)]">
                     {['Time', 'User', 'Action', 'Entity', 'Description'].map(h => (
                         <div key={h} style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#94a3b8', paddingRight: 8 }}>{h}</div>
                     ))}
@@ -201,41 +202,46 @@ export default function AuditPage() {
                         return (
                             <div
                                 key={log.id}
-                                className="log-row"
-                                style={{
-                                    display: 'grid', gridTemplateColumns: '1fr 1.4fr 1fr 0.8fr 2.5fr',
-                                    padding: '11px 18px', borderBottom: i < logs.length - 1 ? '1px solid var(--color-border)' : 'none',
-                                    alignItems: 'start', transition: 'background 0.15s', gap: '0 8px',
-                                }}
+                                className={`log-row flex flex-col md:grid md:grid-cols-[1fr_1.4fr_1fr_0.8fr_2.5fr] gap-2 md:gap-x-2 p-4 md:px-[18px] md:py-[11px] items-start transition-colors ${i < logs.length - 1 ? 'border-b border-[var(--color-border)]' : ''}`}
                             >
-                                {/* Time */}
-                                <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'flex-start', gap: 5, paddingRight: 8 }}>
-                                    <Clock size={11} color="var(--color-text-muted)" style={{ marginTop: 2, flexShrink: 0 }} />
-                                    <span style={{ wordBreak: 'break-word' }}>{log.created_at ? fmtDate(log.created_at) : '—'}</span>
+                                {/* Time & Mobile Action */}
+                                <div className="flex items-start justify-between w-full md:w-auto md:pr-2">
+                                    <div className="flex items-start gap-1.5" style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
+                                        <Clock size={11} color="var(--color-text-muted)" style={{ marginTop: 2, flexShrink: 0 }} />
+                                        <span style={{ wordBreak: 'break-word' }}>{log.created_at ? fmtDate(log.created_at) : '—'}</span>
+                                    </div>
+                                    <span className="md:hidden" style={{ fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6, background: ac.bg, color: ac.color, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                                        {log.action}
+                                    </span>
                                 </div>
+                                
                                 {/* User */}
-                                <div style={{ paddingRight: 8, minWidth: 0 }}>
-                                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                <div className="w-full md:w-auto md:pr-2 min-w-0">
+                                    <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text-primary)' }}>
                                         {log.user_email || '—'}
                                     </div>
                                     <div style={{ fontSize: 10, color: '#94a3b8', marginTop: 1, textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                                         {log.user_type}
                                     </div>
                                 </div>
-                                {/* Action */}
-                                <div style={{ paddingRight: 8 }}>
+                                
+                                {/* Action (Desktop) */}
+                                <div className="hidden md:block md:pr-2">
                                     <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6, background: ac.bg, color: ac.color, textTransform: 'uppercase', letterSpacing: '0.04em', display: 'inline-block', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                         {log.action}
                                     </span>
                                 </div>
+                                
                                 {/* Entity */}
-                                <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', paddingRight: 8, wordBreak: 'break-word' }}>
+                                <div className="w-full md:w-auto md:pr-2" style={{ fontSize: 12, color: 'var(--color-text-secondary)', wordBreak: 'break-word' }}>
+                                    <span className="md:hidden font-semibold mr-1">Entity:</span>
                                     {log.entity_type ? (
                                         <span>{log.entity_type}{log.entity_id ? ` #${log.entity_id}` : ''}</span>
                                     ) : '—'}
                                 </div>
+                                
                                 {/* Description */}
-                                <div style={{ fontSize: 12, color: 'var(--color-text-primary)', lineHeight: 1.5, wordBreak: 'break-word' }}>
+                                <div className="w-full md:w-auto p-3 bg-[var(--color-background)] rounded-lg md:p-0 md:bg-transparent mt-1 md:mt-0" style={{ fontSize: 13, color: 'var(--color-text-primary)', lineHeight: 1.5, wordBreak: 'break-word' }}>
                                     {log.description}
                                 </div>
                             </div>
