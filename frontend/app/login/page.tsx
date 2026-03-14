@@ -64,7 +64,7 @@ export default function LoginPage() {
             }} />
 
             {/* Card */}
-            <div className="w-full max-w-[420px] bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl md:rounded-[20px] p-6 sm:p-8 md:p-10 shadow-[0_4px_32px_rgba(74,107,80,0.1)] transition-all">
+            <div className="w-full max-w-sm sm:max-w-[420px] bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl md:rounded-[24px] p-5 sm:p-8 md:p-10 shadow-[0_4px_32px_rgba(74,107,80,0.1)] transition-all">
                 {/* Logo */}
                 <div className="flex items-center gap-2.5 mb-8">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center shadow-[0_4px_12px_rgba(74,107,80,0.3)]">
@@ -92,7 +92,7 @@ export default function LoginPage() {
                                 type="email" required autoComplete="email"
                                 placeholder="you@company.com"
                                 value={email} onChange={e => setEmail(e.target.value)}
-                                className="w-full py-3 pl-10 pr-3.5 bg-[var(--color-input-bg)] border-1.5 border-[var(--color-input-border)] rounded-lg text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-[var(--color-primary-alpha)]"
+                                className="w-full py-3 pl-10 pr-3.5 bg-[var(--color-input-bg)] border-[1.5px] border-[var(--color-input-border)] rounded-lg text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-[var(--color-primary-alpha)]"
                             />
                         </div>
                     </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                                 type={showPw ? 'text' : 'password'} required autoComplete="current-password"
                                 placeholder="••••••••"
                                 value={password} onChange={e => setPassword(e.target.value)}
-                                className="w-full py-3 pl-10 pr-11 bg-[var(--color-input-bg)] border-1.5 border-[var(--color-input-border)] rounded-lg text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-[var(--color-primary-alpha)]"
+                                className="w-full py-3 pl-10 pr-11 bg-[var(--color-input-bg)] border-[1.5px] border-[var(--color-input-border)] rounded-lg text-sm text-[var(--color-text-primary)] outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-[var(--color-primary-alpha)]"
                             />
                             <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors">
                                 {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -148,7 +148,7 @@ export default function LoginPage() {
                     href="https://cal.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-2.5 border-1.5 border-[var(--color-border)] rounded-xl text-[13px] font-semibold text-[var(--color-text-secondary)] bg-transparent hover:bg-[var(--color-primary-alpha)] hover:border-primary hover:text-primary transition-all duration-200"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 border-[1.5px] border-[var(--color-border)] rounded-xl text-[13px] font-semibold text-[var(--color-text-secondary)] bg-transparent hover:bg-[var(--color-primary-alpha)] hover:border-primary hover:text-primary transition-all duration-200"
                 >
                     <CalendarDays size={16} />
                     Book a call with us
