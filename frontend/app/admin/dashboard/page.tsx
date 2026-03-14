@@ -67,8 +67,8 @@ export default function AdminDashboard() {
 
   const planBadge = (plan: string) => {
     const config: Record<string, { bg: string; color: string }> = {
-      enterprise: { bg: '#eff6ff', color: '#3b82f6' },
-      professional: { bg: '#f5f3ff', color: '#8b5cf6' },
+      enterprise: { bg: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' },
+      professional: { bg: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' },
       free: { bg: 'var(--color-background)', color: 'var(--color-text-secondary)' },
     };
     const c = config[plan] || config.free;
@@ -108,12 +108,12 @@ export default function AdminDashboard() {
   }
 
   const statCards = [
-    { title: 'Total Clients', value: stats?.total_clients ?? 0, sub: `${stats?.new_clients_this_week ?? 0} this week`, icon: <Users size={20} />, color: '#3b82f6', bg: '#eff6ff' },
-    { title: 'Candidates', value: stats?.total_candidates ?? 0, sub: 'Total registered', icon: <FileText size={20} />, color: '#10b981', bg: '#ecfdf5' },
-    { title: 'Requirements', value: stats?.total_requirements ?? 0, sub: 'Open positions', icon: <Briefcase size={20} />, color: '#8b5cf6', bg: '#f5f3ff' },
-    { title: 'CV Uploads', value: stats?.total_cv_uploads ?? 0, sub: 'Total CVs processed', icon: <File size={20} />, color: '#f59e0b', bg: '#fffbeb' },
-    { title: 'Applications', value: stats?.total_applications ?? 0, sub: 'Total submitted', icon: <CheckCircle size={20} />, color: '#06b6d4', bg: '#ecfeff' },
-    { title: 'New This Month', value: stats?.new_clients_this_month ?? 0, sub: 'Client signups', icon: <TrendingUp size={20} />, color: '#ec4899', bg: '#fdf2f8' },
+    { title: 'Total Clients', value: stats?.total_clients ?? 0, sub: `${stats?.new_clients_this_week ?? 0} this week`, icon: <Users size={20} />, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)' },
+    { title: 'Candidates', value: stats?.total_candidates ?? 0, sub: 'Total registered', icon: <FileText size={20} />, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
+    { title: 'Requirements', value: stats?.total_requirements ?? 0, sub: 'Open positions', icon: <Briefcase size={20} />, color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)' },
+    { title: 'CV Uploads', value: stats?.total_cv_uploads ?? 0, sub: 'Total CVs processed', icon: <File size={20} />, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.1)' },
+    { title: 'Applications', value: stats?.total_applications ?? 0, sub: 'Total submitted', icon: <CheckCircle size={20} />, color: '#06b6d4', bg: 'rgba(6, 182, 212, 0.1)' },
+    { title: 'New This Month', value: stats?.new_clients_this_month ?? 0, sub: 'Client signups', icon: <TrendingUp size={20} />, color: '#ec4899', bg: 'rgba(236, 72, 153, 0.1)' },
   ];
 
   // Activity icon map using Lucide components

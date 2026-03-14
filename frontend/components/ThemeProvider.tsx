@@ -11,7 +11,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
         pathname === '/login' || 
         pathname?.startsWith('/client/signup') || 
         pathname?.startsWith('/client/login') ||
-        pathname?.startsWith('/admin/login') || 
+        pathname?.startsWith('/admin') || 
         pathname?.startsWith('/c/') || 
         pathname?.startsWith('/jobs/');
 
