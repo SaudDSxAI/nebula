@@ -90,7 +90,7 @@ export default function AdminAnalyticsPage() {
                 </div>
 
                 {/* KPI Cards */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 32 }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
                     {kpiCards.map(c => (
                         <div key={c.label} style={{
                             background: 'var(--color-card)', borderRadius: 12, border: '1px solid var(--color-border)', padding: 24,
@@ -111,12 +111,12 @@ export default function AdminAnalyticsPage() {
                 </div>
 
                 {/* Charts Row 1 */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                     {/* Clients by Status - Donut with legend */}
                     <div style={{ background: '#fff', borderRadius: 12, border: '1px solid #e5e7eb', padding: 24 }}>
                         <h3 style={{ fontSize: 16, fontWeight: 700, color: '#111827', margin: '0 0 20px' }}>Clients by Status</h3>
                         {clientByStatus.length > 0 ? (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                                 <div style={{ width: 180, height: 180, flexShrink: 0 }}>
                                     <ResponsiveContainer width="100%" height="100%">
                                         <PieChart>
@@ -156,7 +156,7 @@ export default function AdminAnalyticsPage() {
                     <div style={{ background: '#fff', borderRadius: 12, border: '1px solid #e5e7eb', padding: 24 }}>
                         <h3 style={{ fontSize: 16, fontWeight: 700, color: '#111827', margin: '0 0 20px' }}>Clients by Plan</h3>
                         {clientByPlan.length > 0 ? (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                                 <div style={{ width: 180, height: 180, flexShrink: 0 }}>
                                     <ResponsiveContainer width="100%" height="100%">
                                         <PieChart>
@@ -194,7 +194,7 @@ export default function AdminAnalyticsPage() {
                 </div>
 
                 {/* Charts Row 2 */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                     {/* Requirements by Status */}
                     <div style={{ background: '#fff', borderRadius: 12, border: '1px solid #e5e7eb', padding: 24 }}>
                         <h3 style={{ fontSize: 16, fontWeight: 700, color: '#111827', margin: '0 0 20px' }}>Requirements by Status</h3>

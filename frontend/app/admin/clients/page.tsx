@@ -65,7 +65,7 @@ export default function ClientsListPage() {
     <AdminLayout>
       <div>
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 40 }}>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 style={{ fontSize: 28, fontWeight: 700, color: '#111827', margin: 0 }}>Clients</h1>
             <p style={{ fontSize: 15, color: '#6b7280', marginTop: 4 }}>
@@ -86,8 +86,8 @@ export default function ClientsListPage() {
           background: '#fff', borderRadius: 12, border: '1px solid #e5e7eb',
           padding: 16, marginBottom: 32,
         }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 12 }}>
-            <div style={{ position: 'relative' }}>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div className="md:col-span-2 relative">
               <Search size={15} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', pointerEvents: 'none' }} />
               <input
                 type="text"
@@ -138,7 +138,9 @@ export default function ClientsListPage() {
             </div>
           ) : (
             <>
-              {/* Table Header */}
+              <div className="overflow-x-auto">
+                <div style={{ minWidth: 800 }}>
+                  {/* Table Header */}
               <div style={{
                 display: 'grid', gridTemplateColumns: '2fr 2fr 1fr 1fr 1.2fr 0.8fr',
                 padding: '16px 24px', background: '#f9fafb', borderBottom: '1px solid #e5e7eb',
@@ -214,6 +216,8 @@ export default function ClientsListPage() {
                   </div>
                 );
               })}
+              </div>
+            </div>
 
               {/* Empty State */}
               {clients?.clients.length === 0 && (
@@ -225,8 +229,7 @@ export default function ClientsListPage() {
               )}
 
               {/* Pagination */}
-              <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4" style={{
                 padding: '14px 24px', borderTop: '1px solid #e5e7eb', background: '#f9fafb',
               }}>
                 <div style={{ fontSize: 13, color: '#6b7280' }}>

@@ -139,7 +139,7 @@ export default function AdminDashboard() {
 
       <div>
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--color-text-primary)', margin: 0 }}>Dashboard</h1>
             <p style={{ fontSize: 14, color: 'var(--color-text-muted)', marginTop: 4 }}>Platform overview and client management</p>
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Stats Grid — 3 columns × 2 rows */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 28 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-7">
           {statCards.map((c, i) => (
             <div key={i} className="dash-card" style={{ ...card, padding: '20px 18px', animationDelay: `${i * 0.05}s` }}>
               <div style={{
@@ -173,9 +173,9 @@ export default function AdminDashboard() {
         </div>
 
         {/* Plan Distribution + Chart Row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 20, marginBottom: 24 }}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
           {/* Plan Distribution */}
-          <div className="dash-card" style={card}>
+          <div className="dash-card lg:col-span-1" style={card}>
             <h2 style={sectionTitle}>Clients by Plan</h2>
             <p style={sectionSub}>Subscription breakdown</p>
             <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -218,8 +218,8 @@ export default function AdminDashboard() {
           </div>
 
           {/* Growth Chart */}
-          <div className="dash-card" style={card}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+          <div className="dash-card lg:col-span-2" style={card}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
               <div>
                 <h2 style={sectionTitle}>Client Growth</h2>
                 <p style={sectionSub}>Last 30 days</p>
@@ -256,10 +256,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Clients Table + Recent Activity */}
-        <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 20 }}>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           {/* All Clients Table */}
-          <div className="dash-card" style={{ ...card, padding: 0, overflow: 'hidden' }}>
-            <div style={{ padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--color-border)' }}>
+          <div className="dash-card lg:col-span-3" style={{ ...card, padding: 0, overflow: 'hidden' }}>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-[var(--color-border)]">
               <div>
                 <h2 style={{ ...sectionTitle, fontSize: 15 }}>All Clients</h2>
                 <p style={sectionSub}>{clients.length} registered companies</p>
@@ -269,8 +269,8 @@ export default function AdminDashboard() {
               </Link>
             </div>
             {clients.length > 0 ? (
-              <div style={{ maxHeight: 420, overflowY: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <div style={{ maxHeight: 420, overflowY: 'auto', overflowX: 'auto' }}>
+                <table style={{ minWidth: 600, width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                   <thead>
                     <tr style={{ background: 'var(--color-background)', position: 'sticky', top: 0 }}>
                       <th style={{ padding: '10px 16px', textAlign: 'left', fontWeight: 600, color: 'var(--color-text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Company</th>
@@ -323,8 +323,8 @@ export default function AdminDashboard() {
           </div>
 
           {/* Recent Activity */}
-          <div className="dash-card" style={{ ...card, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+          <div className="dash-card lg:col-span-2" style={{ ...card, display: 'flex', flexDirection: 'column' }}>
+            <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 style={{ ...sectionTitle, fontSize: 15 }}>Recent Activity</h2>
                 <p style={sectionSub}>Latest platform events</p>

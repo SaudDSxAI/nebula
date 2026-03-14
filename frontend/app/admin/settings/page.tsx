@@ -16,7 +16,7 @@ export default function AdminSettingsPage() {
         { id: 'platform', label: 'Platform', icon: <Settings size={15} /> },
     ];
 
-    const card: React.CSSProperties = { background: 'var(--color-card)', borderRadius: 12, border: '1px solid var(--color-border)', padding: 32 };
+    const card: React.CSSProperties = { background: 'var(--color-card)', borderRadius: 12, border: '1px solid var(--color-border)' };
 
     return (
         <AdminLayout>
@@ -27,7 +27,7 @@ export default function AdminSettingsPage() {
                 </div>
 
                 {/* Tabs */}
-                <div style={{ display: 'flex', gap: 4, marginBottom: 32, borderBottom: '1px solid var(--color-border)' }}>
+                <div className="flex flex-wrap gap-2 sm:gap-4 mb-8 border-b border-[var(--color-border)]">
                     {tabs.map(tab => (
                         <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
                             display: 'flex', alignItems: 'center', gap: 8,
@@ -44,7 +44,7 @@ export default function AdminSettingsPage() {
 
                 {/* Profile Tab */}
                 {activeTab === 'profile' && (
-                    <div style={{ ...card, maxWidth: 600 }}>
+                    <div className="p-5 sm:p-8" style={{ ...card, maxWidth: 600 }}>
                         <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 24px' }}>Profile Information</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                             <Field label="Name" value={user?.name || 'Admin'} readOnly />
@@ -61,7 +61,7 @@ export default function AdminSettingsPage() {
                 {activeTab === 'security' && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 600 }}>
                         <ChangePasswordCard />
-                        <div style={card}>
+                        <div className="p-5 sm:p-8" style={card}>
                             <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 8px' }}>Two-Factor Authentication</h3>
                             <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 16 }}>Add an extra layer of security to your account</p>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', background: 'var(--color-background)', borderRadius: 8, border: '1px solid var(--color-border)' }}>
@@ -78,7 +78,7 @@ export default function AdminSettingsPage() {
                 {/* Platform Tab */}
                 {activeTab === 'platform' && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 600 }}>
-                        <div style={card}>
+                        <div className="p-5 sm:p-8" style={card}>
                             <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 8px' }}>Platform Configuration</h3>
                             <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 20 }}>General platform settings</p>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -89,7 +89,7 @@ export default function AdminSettingsPage() {
                             </div>
                         </div>
 
-                        <div style={card}>
+                        <div className="p-5 sm:p-8" style={card}>
                             <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 8px' }}>API Configuration</h3>
                             <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 20 }}>Manage API keys and integrations</p>
                             <div style={{ padding: '14px 20px', background: 'var(--color-background)', borderRadius: 8, border: '1px solid var(--color-border)', fontFamily: 'monospace', fontSize: 13, color: 'var(--color-text-primary)' }}>
@@ -129,12 +129,12 @@ function ChangePasswordCard() {
         } finally { setSaving(false); }
     };
 
-    const card: React.CSSProperties = { background: 'var(--color-card)', borderRadius: 12, border: '1px solid var(--color-border)', padding: 32 };
+    const card: React.CSSProperties = { background: 'var(--color-card)', borderRadius: 12, border: '1px solid var(--color-border)' };
     const inp: React.CSSProperties = { width: '100%', padding: '10px 40px 10px 14px', borderRadius: 8, border: '1px solid var(--color-border)', fontSize: 14, outline: 'none', background: 'var(--color-background)', color: 'var(--color-text-primary)', boxSizing: 'border-box', fontFamily: 'inherit' };
     const lbl: React.CSSProperties = { fontSize: 13, fontWeight: 600, color: 'var(--color-text-secondary)', display: 'block', marginBottom: 6 };
 
     return (
-        <div style={card}>
+        <div className="p-5 sm:p-8" style={card}>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 8px' }}>Change Password</h3>
             <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 20 }}>Update your password to keep your account secure</p>
 

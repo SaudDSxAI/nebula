@@ -84,7 +84,7 @@ export default function ActivityLogPage() {
       `}</style>
 
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-7">
                 <div>
                     <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--color-text-primary)', margin: 0 }}>Activity Log</h1>
                     <p style={{ fontSize: 14, color: 'var(--color-text-muted)', marginTop: 4 }}>Full history of all platform events</p>
@@ -145,6 +145,8 @@ export default function ActivityLogPage() {
 
             {/* Table */}
             <div style={{ ...card, overflow: 'hidden', marginBottom: 20 }}>
+              <div className="overflow-x-auto">
+                <div className="min-w-[800px]">
                 {/* Table Header */}
                 <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr 160px 140px', padding: '12px 20px', background: 'var(--color-background)', borderBottom: '1px solid var(--color-border)', fontSize: 11, fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     <div>Action</div>
@@ -199,11 +201,13 @@ export default function ActivityLogPage() {
                         })}
                     </div>
                 )}
+                </div>
+              </div>
             </div>
 
             {/* Pagination */}
             {totalPages > 1 && (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-1">
                     <span style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Page {page} of {totalPages}</span>
                     <div style={{ display: 'flex', gap: 6 }}>
                         <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
