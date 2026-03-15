@@ -176,13 +176,13 @@ export default function CandidatesListPage() {
     return (
         <div style={{ maxWidth: 1200, margin: '0 auto', paddingBottom: 60 }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
                     <h1 style={{ fontSize: 26, fontWeight: 800, color: COLORS.textPrimary, margin: 0, letterSpacing: '-0.02em' }}>
                         Candidates
                     </h1>
                 </div>
-                <button onClick={handleExport} style={{
+                <button onClick={handleExport} className="w-full sm:w-auto justify-center" style={{
                     padding: '8px 16px', border: `1px solid ${COLORS.border}`,
                     background: COLORS.card, borderRadius: 8, color: COLORS.textSecondary,
                     fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6,
@@ -201,7 +201,7 @@ export default function CandidatesListPage() {
                     <Sparkles size={16} color={BLUE} />
                     <span style={{ fontSize: 14, fontWeight: 700, color: COLORS.textPrimary }}>Analyze Search Requirements</span>
                 </div>
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div className="flex flex-col sm:flex-row gap-3">
                     <input
                         type="text" value={smartQuery} onChange={e => setSmartQuery(e.target.value)}
                         onKeyDown={e => e.key === 'Enter' && handleSmartSearch()}
@@ -213,6 +213,7 @@ export default function CandidatesListPage() {
                     />
                     <button
                         onClick={handleSmartSearch} disabled={smartSearching}
+                        className="w-full sm:w-auto justify-center"
                         style={{
                             padding: '10px 20px', background: BLUE, color: '#fff', border: 'none',
                             borderRadius: 8, fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6,
@@ -289,7 +290,7 @@ export default function CandidatesListPage() {
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
                             {/* ── Group 1: Personal ─────────────────────────── */}
                             <div>
@@ -446,14 +447,14 @@ export default function CandidatesListPage() {
                         </div>
 
                         {/* Actions */}
-                        <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end', borderTop: `1px solid ${COLORS.border}`, paddingTop: 16 }}>
-                            <button onClick={resetFilters} style={{
+                        <div className="flex flex-col sm:flex-row gap-2.5 mt-5 justify-end border-t border-[rgba(0,0,0,0.05)] pt-4">
+                            <button onClick={resetFilters} className="w-full sm:w-auto text-center" style={{
                                 padding: '8px 16px', border: `1px solid ${COLORS.border}`, background: 'transparent',
                                 borderRadius: 8, fontSize: 13, fontWeight: 600, color: COLORS.textSecondary, cursor: 'pointer'
                             }}>
                                 Reset Filters
                             </button>
-                            <button onClick={loadData} style={{
+                            <button onClick={loadData} className="w-full sm:w-auto text-center" style={{
                                 padding: '8px 16px', border: 'none', background: BLUE,
                                 borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#fff', cursor: 'pointer'
                             }}>
@@ -565,9 +566,8 @@ export default function CandidatesListPage() {
                                 </div>
 
                                 {/* Footer (Stats) */}
-                                <div style={{
-                                    padding: '12px 20px', background: 'rgba(0,0,0,0.01)', borderTop: `1px solid ${COLORS.border}`,
-                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                                <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3" style={{
+                                    padding: '12px 20px', background: 'rgba(0,0,0,0.01)', borderTop: `1px solid ${COLORS.border}`
                                 }}>
                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                                         <span style={{ fontSize: 10, fontWeight: 600, color: COLORS.textMuted, textTransform: 'uppercase' }}>Experience</span>
@@ -575,7 +575,7 @@ export default function CandidatesListPage() {
                                             {candidate.years_of_experience != null ? `${candidate.years_of_experience} yrs` : (candidate.total_experience || 'N/Ayrs')}
                                         </span>
                                     </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} className="sm:items-end">
                                         <span style={{ fontSize: 10, fontWeight: 600, color: COLORS.textMuted, textTransform: 'uppercase' }}>Gulf Exp</span>
                                         <span style={{ fontSize: 14, fontWeight: 700, color: COLORS.textPrimary }}>
                                             {candidate.experience_in_gulf && candidate.experience_in_gulf !== 'N/A' ? `${candidate.experience_in_gulf} yrs` : 'N/A'}
